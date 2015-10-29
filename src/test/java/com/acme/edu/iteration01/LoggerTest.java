@@ -89,7 +89,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("false");
         //endregion
     }
-/*
+
     @Test
     public void shouldLogReference() throws IOException {
         //region when
@@ -102,5 +102,4 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-    */
 }

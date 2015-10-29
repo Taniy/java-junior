@@ -28,6 +28,10 @@ public class Logger {
         printer("string: "+message);
     }
 
+    public static void log(Object object) {
+        printer("reference: "+object);
+    }
+
     public static void printer(String message) {
         System.out.println(message);
     }
