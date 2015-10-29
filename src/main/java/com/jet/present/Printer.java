@@ -1,4 +1,4 @@
-package com.acme.edu;
+package com.jet.present;
 
  public class Printer {
  	public static void print() {

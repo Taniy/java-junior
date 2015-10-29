@@ -1,5 +1,5 @@
-package com.acme.edu;
-import com.acme.edu.Printer;
+package com.jet;
+import com.jet.present.Printer;
 
 public class Main {
 	public static void main(String[] args) {
