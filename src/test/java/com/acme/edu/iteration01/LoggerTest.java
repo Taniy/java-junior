@@ -61,7 +61,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("b");
         //endregion
     }
-/*
+
     @Test
     public void shouldLogString() throws IOException {
         //region when
@@ -75,7 +75,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("other str");
         //endregion
     }
-*/
+
     @Test
     public void shouldLogBoolean() throws IOException {
         //region when

@@ -9,18 +9,26 @@ public class Logger {
 
 
     public static void log(int message) {
-        System.out.println("primitive: " + message);
+        printer("primitive: " + message);
     }
 
     public static void log(byte message) {
-        System.out.println("primitive: " + message);
+        printer("primitive: " + message);
     }
 
     public static void log(boolean message) {
-        System.out.println("primitive: " + message);
+        printer("primitive: " + message);
     }
 
     public static void log(char message) {
-        System.out.println("char: " + message);
+        printer("char: " + message);
+    }
+
+    public static void log(String message) {
+        printer("string: "+message);
+    }
+
+    public static void printer(String message) {
+        System.out.println(message);
     }
 }
