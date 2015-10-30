@@ -33,7 +33,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitives array: {-1, 0, 1}" + SEP
+                "primitives array: 0" + SEP
         );
         //endregion
     }
@@ -47,11 +47,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-            "primitives matrix: {" + SEP +
-                "{-1, 0, 1}" + SEP +
-                "{1, 2, 3}" + SEP +
-                "{-1, -2, -3}" + SEP +
-            "}" + SEP
+                "primitives matrix: {" + SEP +
+                        "{-1, 0, 1}" + SEP +
+                        "{1, 2, 3}" + SEP +
+                        "{-1, -2, -3}" + SEP +
+                        "}" + SEP
         );
         //endregion
     }
@@ -78,13 +78,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogStringsWithOneMethodCall() throws IOException {
         //region when
         Logger.log("str1", "string 2", "str 3");
+        Logger.close();
         //endregion
 
         //region then
         assertSysoutContains("str1" + SEP + "string 2"+ SEP + "str 3");
         //endregion
     }
-/*
+
     @Test
     public void shouldLogIntegersWithOneMethodCall() throws IOException {
         //region when
@@ -95,7 +96,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("3");
         //endregion
     }
-
+/*
     @Test
     public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {
         //region when

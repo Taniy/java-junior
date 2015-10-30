@@ -85,14 +85,12 @@ public class Logger {
      * log for array message
      * @param args
      */
-    public static void log(int[] args) {
-        String str = "";
+    public static void log(int... args) {
+        int sum = 0;
         for(int i = 0; i < args.length;  i++) {
-            str = str + args[i];
-            if(i != args.length-1)
-                str= str +", ";
+            sum = sum + args[i];
         }
-        printer("primitives array: " + "{" + str + "}");
+        printer("primitives array: " + sum);
     }
 
     /**
