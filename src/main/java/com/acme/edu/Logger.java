@@ -96,6 +96,25 @@ public class Logger {
     }
 
     /**
+     * log for integerMatrix
+     * @param args
+     */
+    public static void log(int[][] args) {
+        String str = "";
+        for(int i = 0; i < args.length;  i++) {
+            str = str + "{";
+            for (int j = 0; j<args[i].length; j++) {
+                str = str + args[i][j];
+                if (j != args[i].length - 1)
+                    str = str + ", ";
+            }
+            str = str + "}" + System.lineSeparator();
+        }
+        printer("primitives matrix: " + "{" + System.lineSeparator() + str + "}");
+
+    }
+
+    /**
      * close  at the end of using class
      */
     public static void close() {
