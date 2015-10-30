@@ -86,11 +86,13 @@ public class Logger {
      * @param args
      */
     public static void log(int[] args) {
-        String string= "";
-        for(int elem: args) {
-            string = "" + elem;
+        String str = "";
+        for(int i = 0; i < args.length;  i++) {
+            str = str + args[i];
+            if(i != args.length-1)
+                str= str +", ";
         }
-        printer("primitives array: " + "{" + string + "}");
+        printer("primitives array: " + "{" + str + "}");
     }
 
     /**

@@ -12,9 +12,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
+        resetOut();
         captureSysout();
     }
     //endregion
+
+    @After
+    public void tearDown() {
+        resetOut();
+    }
 
     @Test
     public void shouldLogInteger() throws IOException {
@@ -110,10 +116,4 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("@");
         //endregion
     }
-
-    @After
-    public void tearDown() {
-        resetOut();
-    }
-
 }
