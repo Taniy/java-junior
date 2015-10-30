@@ -37,7 +37,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains("primitive: " +"1" +SEP);
+        assertSysoutContains("primitive: " + "1" + SEP);
         assertSysoutContains("primitive: "+ "0" + SEP);
         //endregion
     }

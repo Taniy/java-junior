@@ -2,6 +2,7 @@ package com.acme.edu.iteration02;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
     //endregion
 
+    @After
+    public void tearDown() {
+        resetOut();
+    }
 
 
    // TODO: implement Logger solution to match specification as tests
@@ -31,14 +36,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "string: "+"str 1"+SEP +
-            "primitive: " + "3"+SEP +
-            "string: " + "str 2" +SEP +
-            "primitive: " + "0" +SEP
+                "string: " + "str 1" + SEP +
+                        "primitive: " + "3" + SEP +
+                        "string: " + "str 2" + SEP +
+                        "primitive: " + "0" + SEP
         );
         //endregion
     }
-/*
+
     @Test
     public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() {
         //region when
@@ -51,15 +56,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-            "str 1\n" +
-            "10\n" +
-            Integer.MAX_VALUE + "\n" +
-            "str 2\n" +
-            "0\n"
+            "string: "+"str 1"+ SEP +
+            "primitive: "+"10" + SEP +
+            "primitive: " +Integer.MAX_VALUE + SEP +
+            "string: " + "str 2" + SEP +
+            "primitive: " + "0" +SEP
         );
         //endregion
     }
-
+/*
     @Test
     public void shouldLogCorrectlyByteOverflowWhenSequentBytes() {
         //region when

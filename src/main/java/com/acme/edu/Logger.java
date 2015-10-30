@@ -20,10 +20,11 @@ public class Logger {
      * @param message
      */
     public static void log(int message) {
-        if(message == 0) {
+        if(message == 0 || message == Integer.MAX_VALUE) {
             if (flag == true)
                 printer(PRIMITIVE +last);
             printer(PRIMITIVE + message);
+            last = 0;
         } else {
             flag = true;
             last = message + last;
