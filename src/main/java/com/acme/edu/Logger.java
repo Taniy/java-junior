@@ -1,48 +1,76 @@
 package com.acme.edu;
 
 public class Logger {
+    //region fields
     public static final String PRIMITIVE = "primitive: ";
-//region fields
+    public static int last = 0;
+    public static  boolean flag = false;
+    //endregion
 
-//endregion
+
+    public static void log(byte message) {
+        if (flag) {
+            printer(PRIMITIVE + last);
+        }
+        printer(PRIMITIVE + message);
+    }
 
     /**
-     * print for int and byte message
+     * log for int and byte message
      * @param message
      */
     public static void log(int message) {
-        printer(PRIMITIVE + message);
+        if(message == 0) {
+            if (flag == true)
+                printer(PRIMITIVE +last);
+            printer(PRIMITIVE + message);
+        } else {
+            flag = true;
+            last = message + last;
+        }
     }
 
     /**
-     * print for boolean message
+     * log for boolean message
      * @param message
      */
     public static void log(boolean message) {
+        if (flag) {
+            printer(PRIMITIVE + last);
+        }
         printer(PRIMITIVE + message);
     }
 
     /**
-     * print for char message
+     * log for char message
      * @param message
      */
     public static void log(char message) {
+        if (flag) {
+            printer(PRIMITIVE + last);
+        }
         printer("char: " + message);
     }
 
     /**
-     * print for string message
+     * log for string message
      * @param message
      */
     public static void log(String message) {
+        if (flag) {
+            printer(PRIMITIVE + last);
+        }
         printer("string: " + message);
     }
 
     /**
-     * print for object message
+     * log for object message
      * @param message
      */
     public static void log(Object message) {
+        if (flag) {
+            printer(PRIMITIVE + last);
+        }
         printer("reference: " + message);
     }
 
@@ -52,5 +80,6 @@ public class Logger {
      */
     public static void printer(String message) {
         System.out.println(message);
+        flag = false;
     }
 }
