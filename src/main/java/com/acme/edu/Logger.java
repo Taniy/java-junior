@@ -1,11 +1,15 @@
 package com.acme.edu;
 
+/**
+ * at the end of using Logger
+ * you should call function close()
+ */
 public class Logger {
     //region fields
     public static final String PRIMITIVE = "primitive: ";
-    public static int sumInt = 0;
-    public static  int sumString = 0;
-    public static String lastString = "";
+    private static int sumInt = 0;
+    private static  int sumString = 0;
+    private static String lastString = "";
     //endregion
 
     /**
@@ -78,6 +82,26 @@ public class Logger {
     }
 
     /**
+     * log for array message
+     * @param args
+     */
+    public static void log(int[] args) {
+        String string= "";
+        for(int elem: args) {
+            string = "" + elem;
+        }
+        printer("primitives array: " + "{" + string + "}");
+    }
+
+    /**
+     * close  at the end of using class
+     */
+    public static void close() {
+        checkOnInt();
+        checkOnString();
+    }
+
+    /**
      * print message
      * @param message
      */
@@ -87,7 +111,6 @@ public class Logger {
 
     /**
      * print sum of String that we have in buf
-     * if sumString !=0
      */
     private static void  checkOnString() {
          if (sumString != 0) {
@@ -101,20 +124,11 @@ public class Logger {
 
     /**
      * print sum of int that we have in buf
-     * if  sumInt!=0
      */
     private static void  checkOnInt() {
         if (sumInt != 0) {
             printer(PRIMITIVE + sumInt);
             sumInt = 0;
         }
-    }
-
-    /**
-     * close and print all what we have in buffer
-     */
-    public static void close() {
-        checkOnInt();
-        checkOnString();
     }
 }
