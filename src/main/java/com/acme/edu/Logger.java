@@ -3,31 +3,32 @@ package com.acme.edu;
 public class Logger {
     //region fields
     public static final String PRIMITIVE = "primitive: ";
-    public static int last = 0;
-    public static  boolean flag = false;
+    public static int sumInt = 0;
+    public static  int sumString = 0;
+    public static String lastString = "";
     //endregion
 
-
+    /**
+     * log for byte message
+     * @param message
+     */
     public static void log(byte message) {
-        if (flag) {
-            printer(PRIMITIVE + last);
-        }
+        checkOnInt();
+        checkOnString();
         printer(PRIMITIVE + message);
     }
 
     /**
-     * log for int and byte message
+     * log for int message
      * @param message
      */
     public static void log(int message) {
+        checkOnString();
         if(message == 0 || message == Integer.MAX_VALUE) {
-            if (flag == true)
-                printer(PRIMITIVE +last);
+            checkOnInt();
             printer(PRIMITIVE + message);
-            last = 0;
         } else {
-            flag = true;
-            last = message + last;
+            sumInt = message + sumInt;
         }
     }
 
@@ -36,9 +37,8 @@ public class Logger {
      * @param message
      */
     public static void log(boolean message) {
-        if (flag) {
-            printer(PRIMITIVE + last);
-        }
+        checkOnInt();
+        checkOnString();
         printer(PRIMITIVE + message);
     }
 
@@ -47,9 +47,8 @@ public class Logger {
      * @param message
      */
     public static void log(char message) {
-        if (flag) {
-            printer(PRIMITIVE + last);
-        }
+        checkOnInt();
+        checkOnString();
         printer("char: " + message);
     }
 
@@ -58,10 +57,14 @@ public class Logger {
      * @param message
      */
     public static void log(String message) {
-        if (flag) {
-            printer(PRIMITIVE + last);
+        checkOnInt();
+        if (message == lastString)
+            sumString++;
+        else {
+            checkOnString();
+            lastString = message;
+            sumString = 1;
         }
-        printer("string: " + message);
     }
 
     /**
@@ -69,9 +72,8 @@ public class Logger {
      * @param message
      */
     public static void log(Object message) {
-        if (flag) {
-            printer(PRIMITIVE + last);
-        }
+        checkOnInt();
+        checkOnString();
         printer("reference: " + message);
     }
 
@@ -79,8 +81,40 @@ public class Logger {
      * print message
      * @param message
      */
-    public static void printer(String message) {
+    private static void printer(String message) {
         System.out.println(message);
-        flag = false;
+    }
+
+    /**
+     * print sum of String that we have in buf
+     * if sumString !=0
+     */
+    private static void  checkOnString() {
+         if (sumString != 0) {
+             if (sumString == 1)
+                 printer("string: " +lastString);
+             else
+                 printer("string: " + lastString + " (x" + sumString + ")");
+             sumString = 0;
+         }
+    }
+
+    /**
+     * print sum of int that we have in buf
+     * if  sumInt!=0
+     */
+    private static void  checkOnInt() {
+        if (sumInt != 0) {
+            printer(PRIMITIVE + sumInt);
+            sumInt = 0;
+        }
+    }
+
+    /**
+     * close and print all what we have in buffer
+     */
+    public static void close() {
+        checkOnInt();
+        checkOnString();
     }
 }
