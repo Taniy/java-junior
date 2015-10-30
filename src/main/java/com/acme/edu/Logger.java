@@ -115,6 +115,18 @@ public class Logger {
     }
 
     /**
+     * log for vararg
+     * @param args
+     */
+    public static void log(String... args) {
+        String str = "";
+        for(int i = 0; i < args.length;  i++) {
+            str = str+ System.lineSeparator() + args[i];
+        }
+        printer(str);
+    }
+
+    /**
      * close  at the end of using class
      */
     public static void close() {
