@@ -55,6 +55,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log(Integer.MAX_VALUE);
         Logger.log("str 2");
         Logger.log(0);
+        Logger.log(Integer.MIN_VALUE);
         Logger.close();
 
         //endregion
@@ -65,7 +66,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
             "primitive: "+"10" + SEP +
             "primitive: " +Integer.MAX_VALUE + SEP +
             "string: " + "str 2" + SEP +
-            "primitive: " + "0" +SEP
+            "primitive: " + "0" +SEP +
+            "primitive: " + Integer.MIN_VALUE + SEP
         );
         //endregion
     }

@@ -106,9 +106,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log("str");
         Logger.log(Integer.MAX_VALUE - 10);
         Logger.log(11);
-        Logger.log("str");
+        Logger.log("str1");
         Logger.log(Integer.MIN_VALUE + 10);
         Logger.log(-11);
+        Logger.log("str2");
+        Logger.log(-6);
+        Logger.log(Integer.MIN_VALUE + 5);
+        Logger.log("str3");
+        Logger.log(6);
+        Logger.log(Integer.MAX_VALUE - 5);
         Logger.close();
         //endregion
 
@@ -117,9 +123,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("string: " + "str");
         assertSysoutContains("primitive: " + (Integer.MAX_VALUE - 10));
         assertSysoutContains("primitive: " + 11);
-        assertSysoutContains("string: " + "str");
+        assertSysoutContains("string: " + "str1");
         assertSysoutContains("primitive: " + (Integer.MIN_VALUE + 10));
         assertSysoutContains("primitive: " + -11);
+        assertSysoutContains("string: " + "str2");
+        assertSysoutContains("primitive: " + -6);
+        assertSysoutContains("primitive: " + (Integer.MIN_VALUE + 5));
+        assertSysoutContains("string: " + "str3");
+        assertSysoutContains("primitive: " + 6);
+        assertSysoutContains("primitive: " + (Integer.MAX_VALUE - 5));
 
         //endregion
     }

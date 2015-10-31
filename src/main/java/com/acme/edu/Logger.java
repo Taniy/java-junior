@@ -45,7 +45,7 @@ public class Logger {
         if(message == ZEROVALUE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
             checkOnInt();
             print(PRIMITIVE + message);
-        } else if (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message)) {
+        } else if ((sumExist) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
             print(PRIMITIVE + sumInt);
             sumInt = message;
             sumExist = true;
@@ -218,14 +218,14 @@ public class Logger {
 
     private static boolean checkOnOverFlowMaxValue(int  num) {
         boolean flag = false;
-        if ((sumExist) && (sumInt > 0) && (num > 0) && (sumInt > Integer.MAX_VALUE - num))
+        if ((sumInt > 0) && (num > 0) && (sumInt > Integer.MAX_VALUE - num))
             flag = true;
         return flag;
     }
 
     private static boolean checkOnOverFlowMinValue(int num) {
         boolean flag = false;
-        if ((sumExist) && (num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE + num))
+        if ((num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE - num))
             flag = true;
         return flag;
     }
