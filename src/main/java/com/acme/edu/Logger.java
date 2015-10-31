@@ -32,7 +32,12 @@ public class Logger {
             checkOnInt();
             printer(PRIMITIVE + message);
         } else {
-            sumInt = message + sumInt;
+            if ((sumInt != 0) && (message > 0) && (sumInt > Integer.MAX_VALUE - message)) {
+                printer(PRIMITIVE + sumInt);
+                printer(PRIMITIVE + message);
+            } else {
+                sumInt = message + sumInt;
+            }
         }
     }
 
@@ -124,8 +129,10 @@ public class Logger {
         printer(str);
     }
 
-    /**
-     * close  at the end of using class
+
+                /**
+     * close
+                 * at the end of using class
      */
     public static void close() {
         checkOnInt();
