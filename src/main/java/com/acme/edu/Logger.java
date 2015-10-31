@@ -18,6 +18,9 @@ public class Logger {
     private static String lastString = "";
     //endregion
 
+    private Logger() {
+    }
+
     /**
      * Log for byte message
      * Print @param message
@@ -37,13 +40,11 @@ public class Logger {
         if(message == ZEROVALUE || message == Integer.MAX_VALUE) {
             checkOnInt();
             print(PRIMITIVE + message);
+        } else if ((sumInt != SUMEMPTY) && (message > 0) && (sumInt > Integer.MAX_VALUE - message)) {
+            print(PRIMITIVE + sumInt);
+            print(PRIMITIVE + message);
         } else {
-            if ((sumInt != SUMEMPTY) && (message > 0) && (sumInt > Integer.MAX_VALUE - message)) {
-                print(PRIMITIVE + sumInt);
-                print(PRIMITIVE + message);
-            } else {
-                sumInt = message + sumInt;
-            }
+            sumInt = message + sumInt;
         }
     }
 
@@ -97,8 +98,8 @@ public class Logger {
      * Print @param message
      */
     public static void log(int... message) {
-        int sum = 0;
-        for(int i = 0; i < message.length;  i++) {
+        int sum = SUMEMPTY;
+        for (int i = 0; i < message.length;  i++) {
             sum = sum + message[i];
         }
         print("primitives array: " + sum);
@@ -110,7 +111,7 @@ public class Logger {
      */
     public static void log(int[][] message) {
         StringBuilder str = new StringBuilder();
-        for(int i = 0; i < message.length;  i++) {
+        for (int i = 0; i < message.length;  i++) {
             str.append("{");
             putInString(message[i], str);
             str.append(BRAKETCLOSE);
@@ -125,11 +126,11 @@ public class Logger {
      */
     public static void log(int[][][][] message) {
         StringBuilder str = new StringBuilder();
-        for(int i = 0; i < message.length;  i++) {
+        for (int i = 0; i < message.length;  i++) {
             str.append(BRAKETOPEN);
-            for(int j = 0; j < message[i].length;  j++) {
+            for (int j = 0; j < message[i].length;  j++) {
                 str.append(BRAKETOPEN);
-                for(int k = 0; k < message[i][j].length;  k++) {
+                for (int k = 0; k < message[i][j].length;  k++) {
                     str.append(BRAKETOPEN);
                     putInString(message[i][j][k], str);
                     str.append(SEP + BRAKETCLOSE);
@@ -148,7 +149,7 @@ public class Logger {
      */
     public static void log(String... message) {
         String str = "";
-        for(int i = 0; i < message.length;  i++) {
+        for (int i = 0; i < message.length;  i++) {
             str = str+ SEP + message[i];
         }
         print(str);
