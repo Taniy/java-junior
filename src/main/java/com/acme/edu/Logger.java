@@ -7,6 +7,9 @@ package com.acme.edu;
 public class Logger {
     //region fields
     public static final String PRIMITIVE = "primitive: ";
+    public static final String SEP = System.lineSeparator();
+    public static final String BRAKETOPEN = "{" + SEP;
+    public static final String BRAKETCLOSE = "}" + SEP;
     private static int sumInt = 0;
     private static  int sumString = 0;
     private static String lastString = "";
@@ -19,7 +22,7 @@ public class Logger {
     public static void log(byte message) {
         checkOnInt();
         checkOnString();
-        printer(PRIMITIVE + message);
+        print(PRIMITIVE + message);
     }
 
     /**
@@ -30,11 +33,11 @@ public class Logger {
         checkOnString();
         if(message == 0 || message == Integer.MAX_VALUE) {
             checkOnInt();
-            printer(PRIMITIVE + message);
+            print(PRIMITIVE + message);
         } else {
             if ((sumInt != 0) && (message > 0) && (sumInt > Integer.MAX_VALUE - message)) {
-                printer(PRIMITIVE + sumInt);
-                printer(PRIMITIVE + message);
+                print(PRIMITIVE + sumInt);
+                print(PRIMITIVE + message);
             } else {
                 sumInt = message + sumInt;
             }
@@ -48,7 +51,7 @@ public class Logger {
     public static void log(boolean message) {
         checkOnInt();
         checkOnString();
-        printer(PRIMITIVE + message);
+        print(PRIMITIVE + message);
     }
 
     /**
@@ -58,7 +61,7 @@ public class Logger {
     public static void log(char message) {
         checkOnInt();
         checkOnString();
-        printer("char: " + message);
+        print("char: " + message);
     }
 
     /**
@@ -83,56 +86,75 @@ public class Logger {
     public static void log(Object message) {
         checkOnInt();
         checkOnString();
-        printer("reference: " + message);
+        print("reference: " + message);
     }
 
     /**
      * log for array message
-     * @param args
+     * @param message
      */
-    public static void log(int... args) {
+    public static void log(int... message) {
         int sum = 0;
-        for(int i = 0; i < args.length;  i++) {
-            sum = sum + args[i];
+        for(int i = 0; i < message.length;  i++) {
+            sum = sum + message[i];
         }
-        printer("primitives array: " + sum);
+        print("primitives array: " + sum);
     }
 
     /**
      * log for integerMatrix
-     * @param args
+     * @param message
      */
-    public static void log(int[][] args) {
-        String str = "";
-        for(int i = 0; i < args.length;  i++) {
-            str = str + "{";
-            for (int j = 0; j<args[i].length; j++) {
-                str = str + args[i][j];
-                if (j != args[i].length - 1)
-                    str = str + ", ";
-            }
-            str = str + "}" + System.lineSeparator();
+    public static void log(int[][] message) {
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < message.length;  i++) {
+            str.append("{");
+            getString(message[i], str);
+            str.append(BRAKETCLOSE);
         }
-        printer("primitives matrix: " + "{" + System.lineSeparator() + str + "}");
+        print("primitives matrix: " + BRAKETOPEN + str.toString() + "}");
+
+    }
+
+    /**
+     * log for multiArray
+     * @param message
+     */
+    public static void log(int[][][][] message) {
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < message.length;  i++) {
+            str.append(BRAKETOPEN);
+            for(int j = 0; j < message[i].length;  j++) {
+                str.append(BRAKETOPEN);
+                for(int k = 0; k < message[i][j].length;  k++) {
+                    str.append(BRAKETOPEN);
+                    getString(message[i][j][k], str);
+                    str.append(SEP + BRAKETCLOSE);
+                }
+                str.append(BRAKETCLOSE);
+            }
+            str.append(BRAKETCLOSE);
+        }
+        print("primitives multimatrix: " + BRAKETOPEN + str.toString() + "}");
 
     }
 
     /**
      * log for vararg
-     * @param args
+     * @param message
      */
-    public static void log(String... args) {
+    public static void log(String... message) {
         String str = "";
-        for(int i = 0; i < args.length;  i++) {
-            str = str+ System.lineSeparator() + args[i];
+        for(int i = 0; i < message.length;  i++) {
+            str = str+ SEP + message[i];
         }
-        printer(str);
+        print(str);
     }
 
 
-                /**
+    /**
      * close
-                 * at the end of using class
+     * at the end of using class
      */
     public static void close() {
         checkOnInt();
@@ -143,7 +165,7 @@ public class Logger {
      * print message
      * @param message
      */
-    private static void printer(String message) {
+    private static void print(String message) {
         System.out.println(message);
     }
 
@@ -153,9 +175,9 @@ public class Logger {
     private static void  checkOnString() {
          if (sumString != 0) {
              if (sumString == 1)
-                 printer("string: " +lastString);
+                 print("string: " + lastString);
              else
-                 printer("string: " + lastString + " (x" + sumString + ")");
+                 print("string: " + lastString + " (x" + sumString + ")");
              sumString = 0;
          }
     }
@@ -165,8 +187,16 @@ public class Logger {
      */
     private static void  checkOnInt() {
         if (sumInt != 0) {
-            printer(PRIMITIVE + sumInt);
+            print(PRIMITIVE + sumInt);
             sumInt = 0;
+        }
+    }
+
+    private static void getString( int[] ints,StringBuilder str) {
+        for (int j = 0; j< ints.length; j++) {
+            str.append(ints[j]);
+            if (j != ints.length - 1)
+                str.append(", ");
         }
     }
 }
