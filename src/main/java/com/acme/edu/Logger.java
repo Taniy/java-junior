@@ -14,8 +14,9 @@ public class Logger {
     public static final int ZEROVALUE = 0;
     public static final int SUMEMPTY = 0;
     private static int sumInt = 0;
-    private static  int sumString = 0;
+    private static  int countString = 0;
     private static String lastString = "";
+    private static boolean sumExist = false;
     //endregion
 
     private Logger() {
@@ -23,7 +24,9 @@ public class Logger {
 
     /**
      * Log for byte message
-     * Print @param message
+     * Print @param message type byte
+     * example "primitive: 1"
+     * where byte message = 1
      */
     public static void log(byte message) {
         checkOnInt();
@@ -33,24 +36,30 @@ public class Logger {
 
     /**
      * Log for int message
-     * Print @param message
+     * Print @param message type int
+     * example "primitive: 1"
+     * where int message = 1.
      */
     public static void log(int message) {
         checkOnString();
-        if(message == ZEROVALUE || message == Integer.MAX_VALUE) {
+        if(message == ZEROVALUE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
             checkOnInt();
             print(PRIMITIVE + message);
-        } else if ((sumInt != SUMEMPTY) && (message > 0) && (sumInt > Integer.MAX_VALUE - message)) {
+        } else if (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message)) {
             print(PRIMITIVE + sumInt);
-            print(PRIMITIVE + message);
+            sumInt = message;
+            sumExist = true;
         } else {
-            sumInt = message + sumInt;
+            sumInt += message;
+            sumExist = true;
         }
     }
 
     /**
      * Log for boolean message
-     * Print @param message
+     * Print @param message type boolean
+     * example "primitive: true"
+     * where boolean message = true
      */
     public static void log(boolean message) {
         checkOnInt();
@@ -60,7 +69,9 @@ public class Logger {
 
     /**
      * Log for char message
-     * Print @param message
+     * Print @param message type char
+     * example "char: m"
+     * where m - char message
      */
     public static void log(char message) {
         checkOnInt();
@@ -70,22 +81,29 @@ public class Logger {
 
     /**
      * Log for string message
-     * Print @param message
+     * Print @param message type String
+     * if prev string message = current  message,
+     * print "string: str (xn)",
+     * where n = times of repeat string,
+     * "str"- string message
+     * if n = 1 print "string: str"
      */
     public static void log(String message) {
         checkOnInt();
         if (message == lastString)
-            sumString++;
+            countString++;
         else {
             checkOnString();
             lastString = message;
-            sumString = 1;
+            countString = 1;
         }
     }
 
     /**
      * Log for object message
-     * Print @param message
+     * Print @param message type Object
+     * example "reference: @"
+     * where message = @
      */
     public static void log(Object message) {
         checkOnInt();
@@ -94,8 +112,10 @@ public class Logger {
     }
 
     /**
-     * Log for array message
-     * Print @param message
+     * Log for sum of array message
+     * Print @param message type array
+     * example "primitives array: 7"
+     * where message = {1,3,3}
      */
     public static void log(int... message) {
         int sum = SUMEMPTY;
@@ -107,7 +127,9 @@ public class Logger {
 
     /**
      * Log for integerMatrix
-     * Print @param message
+     * Print @param message type matrix
+     * example "primitive matrix: {{1,3},{2,3}}
+     * where message = {{1,3},{2,3}}
      */
     public static void log(int[][] message) {
         StringBuilder str = new StringBuilder();
@@ -122,7 +144,9 @@ public class Logger {
 
     /**
      * Log for multiArray
-     * Print @param message
+     * Print @param message type multiArray
+     * example "primitives multimatrix: {{{{0}}}}"
+     * where message {{{{0}}}}
      */
     public static void log(int[][][][] message) {
         StringBuilder str = new StringBuilder();
@@ -144,8 +168,11 @@ public class Logger {
     }
 
     /**
-     * Log for vararg
-     * Print @param message
+     * Log for string vararg
+     * Print @param message type string vararg
+     * print concat of strings
+     * example "str strings str 2"
+     * where message = {"str", "strings", "str 2"}
      */
     public static void log(String... message) {
         String str = "";
@@ -157,7 +184,8 @@ public class Logger {
 
     /**
      * finish actions of logger
-     * write close() at the end of using class
+     * need to write close() at the end of using class
+     * print all saved messages, that haven't logged yet
      */
     public static void close() {
         checkOnInt();
@@ -169,22 +197,37 @@ public class Logger {
     }
 
     private static void  checkOnString() {
-        if (sumString == SUMEMPTY)
+        if (countString == SUMEMPTY)
             return;
         String str = "string: " + lastString;
-        if (sumString == 1) {
+        if (countString == 1) {
             print(str);
         } else {
-            print(str + " (x" + sumString + ")");
+            print(str + " (x" + countString + ")");
         }
-        sumString = SUMEMPTY;
+        countString = SUMEMPTY;
     }
 
     private static void  checkOnInt() {
-        if (sumInt == SUMEMPTY)
+        if (!sumExist)
             return;
         print(PRIMITIVE + sumInt);
         sumInt = SUMEMPTY;
+        sumExist = false;
+    }
+
+    private static boolean checkOnOverFlowMaxValue(int  num) {
+        boolean flag = false;
+        if ((sumExist) && (sumInt > 0) && (num > 0) && (sumInt > Integer.MAX_VALUE - num))
+            flag = true;
+        return flag;
+    }
+
+    private static boolean checkOnOverFlowMinValue(int num) {
+        boolean flag = false;
+        if ((sumExist) && (num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE + num))
+            flag = true;
+        return flag;
     }
 
     private static void putInString(int[] ints, StringBuilder str) {
