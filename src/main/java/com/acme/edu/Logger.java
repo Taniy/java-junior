@@ -10,13 +10,10 @@ public class Logger {
     public static final String PRIMITIVE = "primitive: ";
     public static final String SEP = System.lineSeparator();
     public static final String BRAKETOPEN = "{" + SEP;
-    public static final String BRAKETCLOSE = "}" + SEP;
-    public static final int ZEROVALUE = 0;
-    public static final int SUMEMPTY = 0;
-    private static int sumInt = 0;
+    public static final String BRAKETCLOSE = "}"+ SEP;
+    private static Integer sumInt = null;
     private static  int countString = 0;
     private static String lastString = "";
-    private static boolean sumExist = false;
     //endregion
 
     private Logger() {
@@ -42,16 +39,17 @@ public class Logger {
      */
     public static void log(int message) {
         checkOnString();
-        if(message == ZEROVALUE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
+        if(message == 0 || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
             checkOnInt();
             print(PRIMITIVE + message);
-        } else if ((sumExist) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
+        } else if ((sumInt != null) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
             print(PRIMITIVE + sumInt);
             sumInt = message;
-            sumExist = true;
-        } else {
-            sumInt += message;
-            sumExist = true;
+        } else  {
+            if (sumInt == null) {
+                sumInt = 0;
+            }
+            sumInt =  sumInt + message;
         }
     }
 
@@ -118,7 +116,7 @@ public class Logger {
      * where message = {1,3,3}
      */
     public static void log(int... message) {
-        int sum = SUMEMPTY;
+        int sum = 0;
         for (int i = 0; i < message.length;  i++) {
             sum = sum + message[i];
         }
@@ -133,13 +131,8 @@ public class Logger {
      */
     public static void log(int[][] message) {
         StringBuilder str = new StringBuilder();
-        for (int i = 0; i < message.length;  i++) {
-            str.append("{");
-            putInString(message[i], str);
-            str.append(BRAKETCLOSE);
-        }
+        putInString(message, str);
         print("primitives matrix: " + BRAKETOPEN + str.toString() + "}");
-
     }
 
     /**
@@ -154,11 +147,7 @@ public class Logger {
             str.append(BRAKETOPEN);
             for (int j = 0; j < message[i].length;  j++) {
                 str.append(BRAKETOPEN);
-                for (int k = 0; k < message[i][j].length;  k++) {
-                    str.append(BRAKETOPEN);
-                    putInString(message[i][j][k], str);
-                    str.append(SEP + BRAKETCLOSE);
-                }
+                putInString(message[i][j], str);
                 str.append(BRAKETCLOSE);
             }
             str.append(BRAKETCLOSE);
@@ -197,7 +186,7 @@ public class Logger {
     }
 
     private static void  checkOnString() {
-        if (countString == SUMEMPTY)
+        if (countString == 0)
             return;
         String str = "string: " + lastString;
         if (countString == 1) {
@@ -205,15 +194,14 @@ public class Logger {
         } else {
             print(str + " (x" + countString + ")");
         }
-        countString = SUMEMPTY;
+        countString = 0;
     }
 
     private static void  checkOnInt() {
-        if (!sumExist)
+        if (sumInt == null)
             return;
         print(PRIMITIVE + sumInt);
-        sumInt = SUMEMPTY;
-        sumExist = false;
+        sumInt = null;
     }
 
     private static boolean checkOnOverFlowMaxValue(int  num) {
@@ -230,11 +218,15 @@ public class Logger {
         return flag;
     }
 
-    private static void putInString(int[] ints, StringBuilder str) {
-        for (int j = 0; j< ints.length; j++) {
-            str.append(ints[j]);
-            if (j != ints.length - 1)
-                str.append(", ");
+    private static void putInString(int[][] ints, StringBuilder str) {
+        for (int i = 0; i < ints.length; i++) {
+            str.append("{");
+            for (int j = 0; j < ints.length; j++) {
+                str.append(ints[i][j]);
+                if (j != ints.length - 1)
+                    str.append(", ");
+            }
+            str.append(BRAKETCLOSE);
         }
     }
 }
