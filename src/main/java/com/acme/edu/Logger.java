@@ -9,10 +9,12 @@ public class Logger {
     //region fields
     public static final String PRIMITIVE = "primitive: ";
     public static final String SEP = System.lineSeparator();
-    public static final String BRAKETOPEN = "{" + SEP;
-    public static final String BRAKETCLOSE = "}"+ SEP;
+    public static final String BRACE_OPEN = "{" + SEP;
+    public static final String BRACE_CLOSE = "}"+ SEP;
+    public static final int SUM_OF_END_MESSAGE = 0;
+    public static final int EMPTY_SUM_OF_STRINGS = 0;
     private static Integer sumInt = null;
-    private static  int countString = 0;
+    private static  int countString;
     private static String lastString = "";
     //endregion
 
@@ -39,7 +41,7 @@ public class Logger {
      */
     public static void log(int message) {
         checkOnString();
-        if(message == 0 || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
+        if(message == SUM_OF_END_MESSAGE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
             checkOnInt();
             print(PRIMITIVE + message);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
@@ -132,7 +134,7 @@ public class Logger {
     public static void log(int[][] message) {
         StringBuilder str = new StringBuilder();
         putInString(message, str);
-        print("primitives matrix: " + BRAKETOPEN + str.toString() + "}");
+        print("primitives matrix: " + BRACE_OPEN + str.toString() + "}");
     }
 
     /**
@@ -143,16 +145,16 @@ public class Logger {
      */
     public static void log(int[][][][] message) {
         StringBuilder str = new StringBuilder();
-        for (int i = 0; i < message.length;  i++) {
-            str.append(BRAKETOPEN);
-            for (int j = 0; j < message[i].length;  j++) {
-                str.append(BRAKETOPEN);
-                putInString(message[i][j], str);
-                str.append(BRAKETCLOSE);
+        for (int[][][] matrixThree: message) {
+            str.append(BRACE_OPEN);
+            for (int [][] matrix: matrixThree) {
+                str.append(BRACE_OPEN);
+                putInString(matrix, str);
+                str.append(BRACE_CLOSE);
             }
-            str.append(BRAKETCLOSE);
+            str.append(BRACE_CLOSE);
         }
-        print("primitives multimatrix: " + BRAKETOPEN + str.toString() + "}");
+        print("primitives multimatrix: " + BRACE_OPEN + str.toString() + "}");
 
     }
 
@@ -186,7 +188,7 @@ public class Logger {
     }
 
     private static void  checkOnString() {
-        if (countString == 0)
+        if (countString == EMPTY_SUM_OF_STRINGS)
             return;
         String str = "string: " + lastString;
         if (countString == 1) {
@@ -194,7 +196,7 @@ public class Logger {
         } else {
             print(str + " (x" + countString + ")");
         }
-        countString = 0;
+        countString = EMPTY_SUM_OF_STRINGS;
     }
 
     private static void  checkOnInt() {
@@ -219,14 +221,14 @@ public class Logger {
     }
 
     private static void putInString(int[][] ints, StringBuilder str) {
-        for (int i = 0; i < ints.length; i++) {
+        for (int[] array: ints) {
             str.append("{");
             for (int j = 0; j < ints.length; j++) {
-                str.append(ints[i][j]);
+                str.append(array[j]);
                 if (j != ints.length - 1)
                     str.append(", ");
             }
-            str.append(BRAKETCLOSE);
+            str.append(BRACE_CLOSE);
         }
     }
 }

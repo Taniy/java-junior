@@ -1,6 +1,6 @@
 package com.acme.edu.iteration02;
 
-import com.acme.edu.Logger;
+import static com.acme.edu.Logger.*;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.After;
 import org.junit.Before;
@@ -28,12 +28,12 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogSequentIntegersAsSum() throws IOException {
         //region when
-        Logger.log("str 1");
-        Logger.log(1);
-        Logger.log(2);
-        Logger.log("str 2");
-        Logger.log(0);
-        Logger.close();
+        log("str 1");
+        log(1);
+        log(2);
+        log("str 2");
+        log(0);
+        close();
 
         //endregion
 
@@ -50,13 +50,13 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() {
         //region when
-        Logger.log("str 1");
-        Logger.log(10);
-        Logger.log(Integer.MAX_VALUE);
-        Logger.log("str 2");
-        Logger.log(0);
-        Logger.log(Integer.MIN_VALUE);
-        Logger.close();
+        log("str 1");
+        log(10);
+        log(Integer.MAX_VALUE);
+        log("str 2");
+        log(0);
+        log(Integer.MIN_VALUE);
+        close();
 
         //endregion
 
@@ -75,12 +75,12 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogCorrectlyByteOverflowWhenSequentBytes() {
         //region when
-        Logger.log("str 1");
-        Logger.log((byte)10);
-        Logger.log((byte)Byte.MAX_VALUE);
-        Logger.log("str 2");
-        Logger.log(0);
-        Logger.close();
+        log("str 1");
+        log((byte)10);
+        log((byte)Byte.MAX_VALUE);
+        log("str 2");
+        log(0);
+        close();
 
         //endregion
 
@@ -98,15 +98,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException {
         //region when
-        Logger.log("str 1");
-        Logger.log("str 2");
-        Logger.log("str 2");
-        Logger.log(0);
-        Logger.log("str 2");
-        Logger.log("str 3");
-        Logger.log("str 3");
-        Logger.log("str 3");
-        Logger.close();
+        log("str 1");
+        log("str 2");
+        log("str 2");
+        log(0);
+        log("str 2");
+        log("str 3");
+        log("str 3");
+        log("str 3");
+        close();
         //endregion
 
         //region then
