@@ -18,7 +18,14 @@ public class Logger {
     private static String lastString = "";
     //endregion
 
-    private Logger() {
+    /**
+     * constructor of Logger
+     */
+    public Logger() {
+    }
+
+    enum State {
+        CONTAINS_STRINGS,CONTAINS_INT, CONTAINS_INT_AND_STRINGS
     }
 
     /**
@@ -28,8 +35,7 @@ public class Logger {
      * where byte message = 1
      */
     public static void log(byte message) {
-        checkOnInt();
-        checkOnString();
+        containInBuf(State.CONTAINS_INT_AND_STRINGS);
         print(PRIMITIVE + message);
     }
 
@@ -40,9 +46,9 @@ public class Logger {
      * where int message = 1.
      */
     public static void log(int message) {
-        checkOnString();
+        containInBuf(State.CONTAINS_STRINGS);
         if(message == SUM_OF_END_MESSAGE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
-            checkOnInt();
+            logSumOfIntInBuf();
             print(PRIMITIVE + message);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
             print(PRIMITIVE + sumInt);
@@ -62,8 +68,7 @@ public class Logger {
      * where boolean message = true
      */
     public static void log(boolean message) {
-        checkOnInt();
-        checkOnString();
+        containInBuf(State.CONTAINS_INT_AND_STRINGS);
         print(PRIMITIVE + message);
     }
 
@@ -74,8 +79,7 @@ public class Logger {
      * where m - char message
      */
     public static void log(char message) {
-        checkOnInt();
-        checkOnString();
+        containInBuf(State.CONTAINS_INT_AND_STRINGS);
         print("char: " + message);
     }
 
@@ -83,17 +87,17 @@ public class Logger {
      * Log for string message
      * Print @param message type String
      * if prev string message = current  message,
-     * print "string: str (xn)",
+     * containInBuf "string: str (xn)",
      * where n = times of repeat string,
      * "str"- string message
-     * if n = 1 print "string: str"
+     * if n = 1 containInBuf "string: str"
      */
     public static void log(String message) {
-        checkOnInt();
+        logSumOfIntInBuf();
         if (message == lastString)
             countString++;
         else {
-            checkOnString();
+            logSumOfStringsInBuf();
             lastString = message;
             countString = 1;
         }
@@ -106,8 +110,7 @@ public class Logger {
      * where message = @
      */
     public static void log(Object message) {
-        checkOnInt();
-        checkOnString();
+        containInBuf(State.CONTAINS_INT_AND_STRINGS);
         print("reference: " + message);
     }
 
@@ -161,14 +164,14 @@ public class Logger {
     /**
      * Log for string vararg
      * Print @param message type string vararg
-     * print concat of strings
+     * containInBuf concat of strings
      * example "str strings str 2"
      * where message = {"str", "strings", "str 2"}
      */
     public static void log(String... message) {
         String str = "";
         for (int i = 0; i < message.length;  i++) {
-            str = str+ SEP + message[i];
+            str = str + SEP + message[i];
         }
         print(str);
     }
@@ -176,18 +179,32 @@ public class Logger {
     /**
      * finish actions of logger
      * need to write close() at the end of using class
-     * print all saved messages, that haven't logged yet
+     * containInBuf all saved messages, that haven't logged yet
      */
     public static void close() {
-        checkOnInt();
-        checkOnString();
+        containInBuf(State.CONTAINS_INT_AND_STRINGS);
     }
 
-    private static void print(String message) {
+    private static void containInBuf(State state) {
+        switch (state) {
+            case CONTAINS_INT_AND_STRINGS:
+                logSumOfStringsInBuf();
+                logSumOfIntInBuf();
+                break;
+            case CONTAINS_INT:
+                logSumOfIntInBuf();
+                break;
+            case CONTAINS_STRINGS:
+                logSumOfStringsInBuf();
+                break;
+        }
+    }
+
+    private  static  void print(String message) {
         System.out.println(message);
     }
 
-    private static void  checkOnString() {
+    private static void logSumOfStringsInBuf() {
         if (countString == EMPTY_SUM_OF_STRINGS)
             return;
         String str = "string: " + lastString;
@@ -199,7 +216,7 @@ public class Logger {
         countString = EMPTY_SUM_OF_STRINGS;
     }
 
-    private static void  checkOnInt() {
+    private static void logSumOfIntInBuf() {
         if (sumInt == null)
             return;
         print(PRIMITIVE + sumInt);
