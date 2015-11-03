@@ -21,6 +21,6 @@ public class StateStringArray extends State {
         for (int i = 0; i < strings.length;  i++) {
             str = str + SEP + strings[i];
         }
-        Printer.print(str);
+        printer.print(str);
     }
 }

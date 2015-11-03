@@ -12,6 +12,6 @@ public class StateBoolean extends State {
 
     @Override
     public void realize(String message) {
-        Printer.print(PRIMITIVE + message);
+        printer.print(PRIMITIVE + message);
     }
 }

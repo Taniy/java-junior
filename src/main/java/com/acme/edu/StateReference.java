@@ -12,6 +12,6 @@ public class StateReference extends State {
 
     @Override
     public void realize(String message) {
-        Printer.print("reference: " + message);
+        printer.print("reference: " + message);
     }
 }

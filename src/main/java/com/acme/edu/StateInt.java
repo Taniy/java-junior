@@ -14,9 +14,9 @@ public class StateInt extends State {
         int number = Integer.valueOf(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
             logSumOfIntInBuf();
-            Printer.print(PRIMITIVE + number);
+            printer.print(PRIMITIVE + number);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(number)||checkOnOverFlowMinValue(number))) {
-            Printer.print(PRIMITIVE + sumInt);
+            printer.print(PRIMITIVE + sumInt);
             sumInt = number;
         } else  {
             if (sumInt == null) {

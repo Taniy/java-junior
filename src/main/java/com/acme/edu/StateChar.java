@@ -11,6 +11,6 @@ public class StateChar extends State {
 
     @Override
     public void realize(String message) {
-        Printer.print("char: " + message);
+        printer.print("char: " + message);
     }
 }
