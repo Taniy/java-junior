@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * Log messages.
  * At the end of using Logger
- * you should call function close().
+ * you should call function finish().
  */
 public class Logger {
     //region fields
@@ -16,6 +16,7 @@ public class Logger {
     private static Integer sumInt = null;
     private static  int countString;
     private static String lastString = "";
+    private State state;
     //endregion
 
     /**
@@ -24,19 +25,8 @@ public class Logger {
     public Logger() {
     }
 
-    enum State {
+    enum Stat {
         CONTAINS_STRINGS,CONTAINS_INT, CONTAINS_INT_AND_STRINGS
-    }
-
-    /**
-     * Log for byte message
-     * Print @param message type byte
-     * example "primitive: 1"
-     * where byte message = 1
-     */
-    public static void log(byte message) {
-        containInBuf(State.CONTAINS_INT_AND_STRINGS);
-        print(PRIMITIVE + message);
     }
 
     /**
@@ -45,20 +35,9 @@ public class Logger {
      * example "primitive: 1"
      * where int message = 1.
      */
-    public static void log(int message) {
-        containInBuf(State.CONTAINS_STRINGS);
-        if(message == SUM_OF_END_MESSAGE || message == Integer.MAX_VALUE || message == Integer.MIN_VALUE) {
-            logSumOfIntInBuf();
-            print(PRIMITIVE + message);
-        } else if ((sumInt != null) && (checkOnOverFlowMaxValue(message)||checkOnOverFlowMinValue(message))) {
-            print(PRIMITIVE + sumInt);
-            sumInt = message;
-        } else  {
-            if (sumInt == null) {
-                sumInt = 0;
-            }
-            sumInt =  sumInt + message;
-        }
+    public void log(int message) {
+        state = new StateInt();
+        state.realize(String.valueOf(message));
     }
 
     /**
@@ -67,9 +46,9 @@ public class Logger {
      * example "primitive: true"
      * where boolean message = true
      */
-    public static void log(boolean message) {
-        containInBuf(State.CONTAINS_INT_AND_STRINGS);
-        print(PRIMITIVE + message);
+    public void log(boolean message) {
+        state = new StateBoolean();
+        state.realize(String.valueOf(message));
     }
 
     /**
@@ -78,9 +57,9 @@ public class Logger {
      * example "char: m"
      * where m - char message
      */
-    public static void log(char message) {
-        containInBuf(State.CONTAINS_INT_AND_STRINGS);
-        print("char: " + message);
+    public void log(char message) {
+        state = new StateChar();
+        state.realize(String.valueOf(message));
     }
 
     /**
@@ -92,15 +71,9 @@ public class Logger {
      * "str"- string message
      * if n = 1 containInBuf "string: str"
      */
-    public static void log(String message) {
-        logSumOfIntInBuf();
-        if (message == lastString)
-            countString++;
-        else {
-            logSumOfStringsInBuf();
-            lastString = message;
-            countString = 1;
-        }
+    public void log(String message) {
+        state = new StateString();
+        state.realize(message);
     }
 
     /**
@@ -109,9 +82,9 @@ public class Logger {
      * example "reference: @"
      * where message = @
      */
-    public static void log(Object message) {
-        containInBuf(State.CONTAINS_INT_AND_STRINGS);
-        print("reference: " + message);
+    public void log(Object message) {
+        state = new StateReference();
+        state.realize(String.valueOf(message));
     }
 
     /**
@@ -168,24 +141,21 @@ public class Logger {
      * example "str strings str 2"
      * where message = {"str", "strings", "str 2"}
      */
-    public static void log(String... message) {
-        String str = "";
-        for (int i = 0; i < message.length;  i++) {
-            str = str + SEP + message[i];
-        }
-        print(str);
+    public void log(String... message) {
+        state = new StateStringArray();
+        state.realize(message.toString());
     }
 
     /**
      * finish actions of logger
-     * need to write close() at the end of using class
+     * need to write finish() at the end of using class
      * containInBuf all saved messages, that haven't logged yet
      */
-    public static void close() {
-        containInBuf(State.CONTAINS_INT_AND_STRINGS);
+    public void finish() {
+        state.close();
     }
 
-    private static void containInBuf(State state) {
+    private static void containInBuf(Stat state) {
         switch (state) {
             case CONTAINS_INT_AND_STRINGS:
                 logSumOfStringsInBuf();
@@ -221,20 +191,6 @@ public class Logger {
             return;
         print(PRIMITIVE + sumInt);
         sumInt = null;
-    }
-
-    private static boolean checkOnOverFlowMaxValue(int  num) {
-        boolean flag = false;
-        if ((sumInt > 0) && (num > 0) && (sumInt > Integer.MAX_VALUE - num))
-            flag = true;
-        return flag;
-    }
-
-    private static boolean checkOnOverFlowMinValue(int num) {
-        boolean flag = false;
-        if ((num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE - num))
-            flag = true;
-        return flag;
     }
 
     private static void putInString(int[][] ints, StringBuilder str) {
