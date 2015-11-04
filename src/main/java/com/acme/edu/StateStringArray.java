@@ -7,56 +7,40 @@ public class StateStringArray extends State {
     private static final String SEP = System.lineSeparator();
 
     @Override
-    public void realize(String message) {
+    public void log(String message) {
         String[] strings;
-        strings = message.split(" ");
+        strings = message.split(", ");
         String str = "";
         for (int i = 0; i < strings.length;  i++) {
             str = str + SEP + strings[i];
         }
+        str = str.substring(2,str.length()-1);
         printer.print(str);
     }
 
-    private void flush() {
+    public void flush() {
     }
 
     @Override
     public State switchToIntState() {
         flush();
-        state = new StateInt();
-        return state;
+        return new StateInt();
     }
 
     @Override
     public State switchToStringState() {
-        state = new StateString();
-        return state;
-    }
-
-    @Override
-    public State switchToCharState() {
         flush();
-        state = new StateChar();
-        return state;
-
+        return new StateString();
     }
 
     @Override
     public State switchToStringArrayState() {
-        return state;
+        return this;
     }
 
     @Override
-    public State switchToBooleanState() {
+    public State switchToDefaultState() {
         flush();
-        state = new StateBoolean();
-        return state;
-    }
-
-    @Override
-    public State switchToReferenceState() {
-        flush();
-        state  = new StateReference();
-        return state;
+        return new StateDefault();
     }
 }

@@ -4,13 +4,16 @@ package com.acme.edu;
  * Created by tan on 02.11.15.
  */
 public class StateString extends State {
+    private static final int EMPTY_SUM_OF_STRINGS = 0;
+    private int countString;
+    private String lastString = "";
 
     @Override
-    public void realize(String message) {
+    public void log(String message) {
         if (message == lastString)
             countString++;
         else {
-            logSumOfStringsInBuf();
+            flush();
             lastString = message;
             countString = 1;
         }
@@ -19,44 +22,34 @@ public class StateString extends State {
     @Override
     public State switchToIntState() {
         flush();
-        state = new StateInt();
-        return state;
+        return new StateInt();
     }
 
     @Override
     public State switchToStringState() {
-        return state;
+        return this;
     }
 
     @Override
     public State switchToStringArrayState() {
-        flush();
-        state = new StateStringArray();
-        return state;
+        return new StateStringArray();
     }
 
     @Override
-    public State switchToBooleanState() {
+    public State switchToDefaultState() {
         flush();
-        state = new StateBoolean();
-        return state;
+        return new StateDefault();
     }
 
-    @Override
-    public State switchToCharState() {
-        flush();
-        state = new StateChar();
-        return state;
-    }
-
-    @Override
-    public State switchToReferenceState() {
-        flush();
-        state = new StateReference();
-        return state;
-    }
-
-    private void flush() {
-        logSumOfStringsInBuf();
+    public void flush() {
+        if (countString == EMPTY_SUM_OF_STRINGS)
+            return;
+        String str = "string: " + lastString;
+        if (countString == 1) {
+            printer.print(str);
+        } else {
+            printer.print(str + " (x" + countString + ")");
+        }
+        countString = EMPTY_SUM_OF_STRINGS;
     }
 }

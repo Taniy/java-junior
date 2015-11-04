@@ -4,12 +4,15 @@ package com.acme.edu;
  * Created by tan on 02.11.15.
  */
 public class StateInt extends State {
+    private static final String PRIMITIVE = "primitive: ";
+    private static final int SUM_OF_END_MESSAGE = 0;
+    private Integer sumInt = null;
 
     @Override
-    public void realize(String message) {
-        int number = Integer.valueOf(message);
+    public void log(String message) {
+        int number = Integer.parseInt(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
-            logSumOfIntInBuf();
+            flush();
             printer.print(PRIMITIVE + number);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(number)||checkOnOverFlowMinValue(number))) {
             printer.print(PRIMITIVE + sumInt);
@@ -24,42 +27,24 @@ public class StateInt extends State {
 
     @Override
     public State switchToIntState() {
-        return state;
+        return this;
     }
 
     @Override
     public State switchToStringState() {
         flush();
-        state = new StateString();
-        return state;
-    }
-
-    @Override
-    public State switchToCharState() {
-        flush();
-        state = new StateChar();
-        return state;
+        return new StateString();
     }
 
     @Override
     public State switchToStringArrayState() {
         flush();
-        state = new StateStringArray();
-        return state;
+        return new StateStringArray();
     }
 
     @Override
-    public State switchToBooleanState() {
-        flush();
-        state = new StateBoolean();
-        return state;
-    }
-
-    @Override
-    public State switchToReferenceState() {
-        flush();
-        state = new StateReference();
-        return state;
+    public State switchToDefaultState() {
+        return new StateDefault();
     }
 
     private boolean checkOnOverFlowMaxValue(int  num) {
@@ -76,7 +61,10 @@ public class StateInt extends State {
         return flag;
     }
 
-    private void flush() {
-        logSumOfIntInBuf();
+    public void flush() {
+            if (sumInt == null)
+                return;
+            printer.print(PRIMITIVE + sumInt);
+            sumInt = null;
     }
 }

@@ -1,6 +1,5 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.Logger;
 import com.acme.edu.Printer;
 import com.acme.edu.State;
 import com.acme.edu.StateInt;
@@ -18,8 +17,8 @@ public class StateTest {
         State sut = new StateInt();
 
         sut.setPrinter(mok);
-        sut.realize("5");
-        sut.realize("0");
+        sut.log("5");
+        sut.log("0");
 
         verify(mok, times(1)).print("primitive: 5");
         verify(mok, times(1)).print("primitive: 0");
@@ -31,8 +30,8 @@ public class StateTest {
         State sut = new StateInt();
 
         sut.setPrinter(mok);
-        sut.realize(String.valueOf(Integer.MAX_VALUE));
-        sut.realize(String.valueOf(Integer.MIN_VALUE));
+        sut.log(String.valueOf(Integer.MAX_VALUE));
+        sut.log(String.valueOf(Integer.MIN_VALUE));
 
         verify(mok, times(1)).print("primitive: " + Integer.MAX_VALUE);
         verify(mok, times(1)).print("primitive: " + Integer.MIN_VALUE);
@@ -44,10 +43,10 @@ public class StateTest {
         State sut = new StateInt();
 
         sut.setPrinter(mok);
-        sut.realize("2");
-        sut.realize("3");
-        sut.realize("4");
-        sut.close();
+        sut.log("2");
+        sut.log("3");
+        sut.log("4");
+        sut.flush();
 
         verify(mok, times(1)).print("primitive: 9");
     }
@@ -58,9 +57,9 @@ public class StateTest {
         State sut = new StateInt();
 
         sut.setPrinter(mok);
-        sut.realize(String.valueOf(Integer.MAX_VALUE-11));
-        sut.realize("12");
-        sut.close();
+        sut.log(String.valueOf(Integer.MAX_VALUE-11));
+        sut.log("12");
+        sut.flush();
 
         verify(mok, times(1)).print("primitive: " + String.valueOf(Integer.MAX_VALUE-11));
         verify(mok, times(1)).print("primitive: 12");
@@ -72,9 +71,9 @@ public class StateTest {
         State sut = new StateInt();
 
         sut.setPrinter(mok);
-        sut.realize(String.valueOf(Integer.MIN_VALUE+11));
-        sut.realize("-12");
-        sut.close();
+        sut.log(String.valueOf(Integer.MIN_VALUE+11));
+        sut.log("-12");
+        sut.flush();
 
         verify(mok, times(1)).print("primitive: " + String.valueOf(Integer.MIN_VALUE+11));
         verify(mok, times(1)).print("primitive: -12");

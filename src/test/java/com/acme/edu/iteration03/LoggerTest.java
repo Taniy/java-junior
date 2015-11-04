@@ -8,6 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+
 @Ignore
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public Logger logger;
@@ -28,7 +29,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //TODO: implement Logger solution to match specification as tests
 
     @Test
-    @Ignore
     public void shouldLogIntegersArray() throws IOException {
         //region when
         logger.log(new int[]{-1, 0, 1});
@@ -43,7 +43,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    @Ignore
     public void shouldLogIntegersMatrix() throws IOException {
         //region when
         logger.log(new int[][]{{-1, 0, 1}, {1, 2, 3}, {-1, -2, -3}});
@@ -62,7 +61,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    @Ignore
     public void shouldLogIntegersMulitidimentionalArray() throws IOException {
         //region when
         logger.log(new int[][][][]{{{{0}}}});
@@ -82,7 +80,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    @Ignore
     public void shouldLogStringsWithOneMethodCall() throws IOException {
         //region when
         logger.log("str1", "string 2", "str 3");
@@ -95,7 +92,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    @Ignore
     public void shouldLogIntegersWithOneMethodCall() throws IOException {
         //region when
         logger.log(-1, 0, 1, 3);
@@ -108,7 +104,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    @Ignore
     public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {
         //region when
         logger.log(1);

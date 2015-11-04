@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import java.util.Arrays;
+
 /**
  * Log messages.
  * At the end of using Logger
@@ -8,25 +10,21 @@ package com.acme.edu;
 public class Logger {
     //region fields
     public static final String PRIMITIVE = "primitive: ";
+    public static final String CHAR = "char: ";
+    public static final String REFERENCE = "reference: ";
+    public static final String PRIMITIVES_ARRAY = "primitives array: ";
+    public static final String PRIMITIVES_MATRIX = "primitives matrix: ";
+    public static final String PRIMITIVES_MULTIMATRIX = "primitives multimatrix: ";
     public static final String SEP = System.lineSeparator();
     public static final String BRACE_OPEN = "{" + SEP;
     public static final String BRACE_CLOSE = "}"+ SEP;
-    public static final int SUM_OF_END_MESSAGE = 0;
-    public static final int EMPTY_SUM_OF_STRINGS = 0;
-    private static Integer sumInt = null;
-    private static  int countString;
-    private static String lastString = "";
-    private static State state;
+    private static State state = new StateDefault();
     //endregion
 
     /**
      * constructor of Logger
      */
     public Logger() {
-    }
-
-    enum Stat {
-        CONTAINS_STRINGS,CONTAINS_INT, CONTAINS_INT_AND_STRINGS
     }
 
     /**
@@ -36,13 +34,8 @@ public class Logger {
      * where int message = 1.
      */
     public void log(int message) {
-        if( state == null) {
-            state = new StateInt();
-            state.setState(state);
-        } else {
-            state = state.switchToIntState();
-        }
-        state.realize(String.valueOf(message));
+        state = state.switchToIntState();
+        state.log("" + message);
     }
 
     /**
@@ -52,13 +45,8 @@ public class Logger {
      * where boolean message = true
      */
     public void log(boolean message) {
-        if( state == null) {
-            state = new StateBoolean();
-            state.setState(state);
-        } else {
-            state = state.switchToBooleanState();
-        }
-        state.realize(String.valueOf(message));
+        state = state.switchToDefaultState();
+        state.log(PRIMITIVE + message);
     }
 
     /**
@@ -68,13 +56,8 @@ public class Logger {
      * where m - char message
      */
     public void log(char message) {
-        if( state == null) {
-            state = new StateChar();
-            state.setState(state);
-        } else {
-            state = state.switchToCharState();
-        }
-        state.realize(String.valueOf(message));
+        state = state.switchToDefaultState();
+        state.log(CHAR + message);
     }
 
     /**
@@ -87,13 +70,8 @@ public class Logger {
      * if n = 1 containInBuf "string: str"
      */
     public void log(String message) {
-        if( state == null) {
-            state = new StateString();
-            state.setState(state);
-        } else {
-            state = state.switchToStringState();
-        }
-        state.realize(message);
+        state = state.switchToStringState();
+        state.log(message);
     }
 
     /**
@@ -103,13 +81,8 @@ public class Logger {
      * where message = @
      */
     public void log(Object message) {
-        if( state == null) {
-            state = new StateReference();
-            state.setState(state);
-        } else {
-            state = state.switchToReferenceState();
-        }
-        state.realize(String.valueOf(message));
+        state = state.switchToDefaultState();
+        state.log(REFERENCE + message);
     }
 
     /**
@@ -123,7 +96,7 @@ public class Logger {
         for (int i = 0; i < message.length;  i++) {
             sum = sum + message[i];
         }
-        print("primitives array: " + sum);
+        print(PRIMITIVES_ARRAY + sum);
     }
 
     /**
@@ -135,7 +108,7 @@ public class Logger {
     public static void log(int[][] message) {
         StringBuilder str = new StringBuilder();
         putInString(message, str);
-        print("primitives matrix: " + BRACE_OPEN + str.toString() + "}");
+        print(PRIMITIVES_MATRIX + BRACE_OPEN + str.toString() + "}");
     }
 
     /**
@@ -155,7 +128,7 @@ public class Logger {
             }
             str.append(BRACE_CLOSE);
         }
-        print("primitives multimatrix: " + BRACE_OPEN + str.toString() + "}");
+        print(PRIMITIVES_MULTIMATRIX + BRACE_OPEN + str.toString() + "}");
 
     }
 
@@ -167,13 +140,8 @@ public class Logger {
      * where message = {"str", "strings", "str 2"}
      */
     public void log(String... message) {
-        if( state == null) {
-            state = new StateStringArray();
-            state.setState(state);
-        } else {
-            state = state.switchToStringArrayState();
-        }
-        state.realize(message.toString());
+        state = state.switchToStringArrayState();
+        state.log(Arrays.toString(message));
     }
 
     /**
@@ -182,45 +150,11 @@ public class Logger {
      * containInBuf all saved messages, that haven't logged yet
      */
     public void finish() {
-        state.close();
-    }
-
-    private static void containInBuf(Stat state) {
-        switch (state) {
-            case CONTAINS_INT_AND_STRINGS:
-                logSumOfStringsInBuf();
-                logSumOfIntInBuf();
-                break;
-            case CONTAINS_INT:
-                logSumOfIntInBuf();
-                break;
-            case CONTAINS_STRINGS:
-                logSumOfStringsInBuf();
-                break;
-        }
+        state.flush();
     }
 
     private  static  void print(String message) {
         System.out.println(message);
-    }
-
-    private static void logSumOfStringsInBuf() {
-        if (countString == EMPTY_SUM_OF_STRINGS)
-            return;
-        String str = "string: " + lastString;
-        if (countString == 1) {
-            print(str);
-        } else {
-            print(str + " (x" + countString + ")");
-        }
-        countString = EMPTY_SUM_OF_STRINGS;
-    }
-
-    private static void logSumOfIntInBuf() {
-        if (sumInt == null)
-            return;
-        print(PRIMITIVE + sumInt);
-        sumInt = null;
     }
 
     private static void putInString(int[][] ints, StringBuilder str) {
