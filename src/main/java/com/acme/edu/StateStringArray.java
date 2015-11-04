@@ -5,6 +5,15 @@ package com.acme.edu;
  */
 public class StateStringArray extends State {
     private static final String SEP = System.lineSeparator();
+    private Printer printer;
+
+    /**
+     * pass printer to StateStringArray
+     * @param printer Printer
+     */
+    public StateStringArray(Printer printer) {
+        this.printer = printer;
+    }
 
     @Override
     public void log(String message) {
@@ -18,19 +27,18 @@ public class StateStringArray extends State {
         printer.print(str);
     }
 
+    @Override
     public void flush() {
     }
 
     @Override
     public State switchToIntState() {
-        flush();
-        return new StateInt();
+        return new StateInt(printer);
     }
 
     @Override
     public State switchToStringState() {
-        flush();
-        return new StateString();
+        return new StateString(printer);
     }
 
     @Override
@@ -40,7 +48,6 @@ public class StateStringArray extends State {
 
     @Override
     public State switchToDefaultState() {
-        flush();
-        return new StateDefault();
+        return new StateDefault(printer);
     }
 }

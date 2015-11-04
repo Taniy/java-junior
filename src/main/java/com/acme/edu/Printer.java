@@ -1,8 +1,13 @@
 package com.acme.edu;
 
 /**
- * Created by tan on 02.11.15.
+ * Interface of Printer
  */
 public interface Printer {
+
+    /**
+     * print messages
+     * @param message string
+     */
     void print(String message);
 }

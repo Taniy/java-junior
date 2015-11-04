@@ -1,20 +1,43 @@
 package com.acme.edu;
 
 /**
- * Created by tan on 02.11.15.
+ * class for different types of State
  */
 public abstract class State {
-    protected Printer printer  = new ConsolePrinter();
 
+    /**
+     * logging string messages
+     * @param message string
+     */
     public abstract void log(String message);
-    public abstract State switchToIntState();
-    public abstract State switchToStringState();
-    public abstract State switchToStringArrayState();
-    public abstract State switchToDefaultState();
-    public abstract void flush();
 
-    public void setPrinter(Printer printer) {
-        this.printer = printer;
-    }
+    /**
+     * change current state to int
+     * @return int state
+     */
+    public abstract State switchToIntState();
+
+    /**
+     * change current state to string
+     * @return string state
+     */
+    public abstract State switchToStringState();
+
+    /**
+     * change current state to stringArray
+     * @return StringArray state
+     */
+    public abstract State switchToStringArrayState();
+
+    /**
+     * change current state to char,reference, boolean
+     * @return default state
+     */
+    public abstract State switchToDefaultState();
+
+    /**
+     * clean all messages saved in buffer
+     */
+    public abstract void flush();
 
 }

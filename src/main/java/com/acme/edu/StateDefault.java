@@ -1,9 +1,19 @@
 package com.acme.edu;
 
 /**
- * Created by tan on 02.11.15.
+ * logging for StateDefault type
+ * (char, boolean, reference, object)
  */
 public class StateDefault extends State {
+    private Printer printer;
+
+    /**
+     * pass printer to StateDefault
+     * @param printer Printer
+     */
+    public StateDefault(Printer printer) {
+        this.printer = printer;
+    }
 
     @Override
     public void log(String message) {
@@ -12,20 +22,17 @@ public class StateDefault extends State {
 
     @Override
     public State switchToIntState() {
-        flush();
-        return new StateInt();
+        return new StateInt(printer);
     }
 
     @Override
     public State switchToStringState() {
-        flush();
-        return new StateString();
+        return new StateString(printer);
     }
 
     @Override
     public State switchToStringArrayState() {
-        flush();
-        return new StateStringArray();
+        return new StateStringArray(printer);
     }
 
     @Override
@@ -33,6 +40,7 @@ public class StateDefault extends State {
         return this;
     }
 
+    @Override
     public void flush() {
     }
 }

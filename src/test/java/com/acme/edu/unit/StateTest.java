@@ -14,9 +14,8 @@ public class StateTest {
     @Test
     public void shouldNotPrintSumWhenLogValuesAndZero() {
         Printer mok = mock(Printer.class);
-        State sut = new StateInt();
+        State sut = new StateInt(mok);
 
-        sut.setPrinter(mok);
         sut.log("5");
         sut.log("0");
 
@@ -27,9 +26,8 @@ public class StateTest {
     @Test
     public void shouldPrintMaxAndMinWhenLogMaxMinValues() {
         Printer mok = mock(Printer.class);
-        State sut = new StateInt();
+        State sut = new StateInt(mok);
 
-        sut.setPrinter(mok);
         sut.log(String.valueOf(Integer.MAX_VALUE));
         sut.log(String.valueOf(Integer.MIN_VALUE));
 
@@ -40,9 +38,8 @@ public class StateTest {
     @Test
     public void shouldPrintSumWhenLogSeveralValues() {
         Printer mok = mock(Printer.class);
-        State sut = new StateInt();
+        State sut = new StateInt(mok);
 
-        sut.setPrinter(mok);
         sut.log("2");
         sut.log("3");
         sut.log("4");
@@ -54,9 +51,8 @@ public class StateTest {
     @Test
     public void shouldPrintSeparateValuesWhenOverflowMaxInteger() {
         Printer mok = mock(Printer.class);
-        State sut = new StateInt();
+        State sut = new StateInt(mok);
 
-        sut.setPrinter(mok);
         sut.log(String.valueOf(Integer.MAX_VALUE-11));
         sut.log("12");
         sut.flush();
@@ -68,9 +64,8 @@ public class StateTest {
     @Test
     public void shouldPrintSeparateValuesWhenOverflowMinInteger() {
         Printer mok = mock(Printer.class);
-        State sut = new StateInt();
+        State sut = new StateInt(mok);
 
-        sut.setPrinter(mok);
         sut.log(String.valueOf(Integer.MIN_VALUE+11));
         sut.log("-12");
         sut.flush();

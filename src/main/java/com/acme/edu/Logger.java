@@ -18,7 +18,8 @@ public class Logger {
     public static final String SEP = System.lineSeparator();
     public static final String BRACE_OPEN = "{" + SEP;
     public static final String BRACE_CLOSE = "}"+ SEP;
-    private static State state = new StateDefault();
+    private Printer printer = new ConsolePrinter();
+    private State state = new StateDefault(printer);
     //endregion
 
     /**
