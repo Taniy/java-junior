@@ -16,7 +16,7 @@ public class Logger {
     private static Integer sumInt = null;
     private static  int countString;
     private static String lastString = "";
-    private State state;
+    private static State state;
     //endregion
 
     /**
@@ -36,7 +36,12 @@ public class Logger {
      * where int message = 1.
      */
     public void log(int message) {
-        state = new StateInt();
+        if( state == null) {
+            state = new StateInt();
+            state.setState(state);
+        } else {
+            state = state.switchToIntState();
+        }
         state.realize(String.valueOf(message));
     }
 
@@ -47,7 +52,12 @@ public class Logger {
      * where boolean message = true
      */
     public void log(boolean message) {
-        state = new StateBoolean();
+        if( state == null) {
+            state = new StateBoolean();
+            state.setState(state);
+        } else {
+            state = state.switchToBooleanState();
+        }
         state.realize(String.valueOf(message));
     }
 
@@ -58,7 +68,12 @@ public class Logger {
      * where m - char message
      */
     public void log(char message) {
-        state = new StateChar();
+        if( state == null) {
+            state = new StateChar();
+            state.setState(state);
+        } else {
+            state = state.switchToCharState();
+        }
         state.realize(String.valueOf(message));
     }
 
@@ -72,7 +87,12 @@ public class Logger {
      * if n = 1 containInBuf "string: str"
      */
     public void log(String message) {
-        state = new StateString();
+        if( state == null) {
+            state = new StateString();
+            state.setState(state);
+        } else {
+            state = state.switchToStringState();
+        }
         state.realize(message);
     }
 
@@ -83,7 +103,12 @@ public class Logger {
      * where message = @
      */
     public void log(Object message) {
-        state = new StateReference();
+        if( state == null) {
+            state = new StateReference();
+            state.setState(state);
+        } else {
+            state = state.switchToReferenceState();
+        }
         state.realize(String.valueOf(message));
     }
 
@@ -142,7 +167,12 @@ public class Logger {
      * where message = {"str", "strings", "str 2"}
      */
     public void log(String... message) {
-        state = new StateStringArray();
+        if( state == null) {
+            state = new StateStringArray();
+            state.setState(state);
+        } else {
+            state = state.switchToStringArrayState();
+        }
         state.realize(message.toString());
     }
 

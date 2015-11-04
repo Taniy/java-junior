@@ -10,9 +10,20 @@ public abstract class State {
     public static final int EMPTY_SUM_OF_STRINGS = 0;
     public static final String PRIMITIVE = "primitive: ";
     public static final int SUM_OF_END_MESSAGE = 0;
-    Printer printer = new ConsolePrinter();
+    protected Printer printer  = new ConsolePrinter();
+    protected static State state;
 
     public abstract void realize(String message);
+    public abstract State switchToIntState();
+    public abstract State switchToStringState();
+    public abstract State switchToStringArrayState();
+    public abstract State switchToBooleanState();
+    public abstract State switchToCharState();
+    public abstract State switchToReferenceState();
+
+    public void setPrinter(Printer printer) {
+        this.printer = printer;
+    }
 
     protected void logSumOfStringsInBuf() {
         if (countString == EMPTY_SUM_OF_STRINGS)
@@ -31,6 +42,10 @@ public abstract class State {
             return;
         printer.print(PRIMITIVE + sumInt);
         sumInt = null;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public void close() {

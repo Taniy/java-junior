@@ -5,10 +5,6 @@ package com.acme.edu;
  */
 public class StateInt extends State {
 
-    public StateInt() {
-        logSumOfStringsInBuf();
-    }
-
     @Override
     public void realize(String message) {
         int number = Integer.valueOf(message);
@@ -26,19 +22,61 @@ public class StateInt extends State {
         }
     }
 
+    @Override
+    public State switchToIntState() {
+        return state;
+    }
 
-    private static boolean checkOnOverFlowMaxValue(int  num) {
+    @Override
+    public State switchToStringState() {
+        flush();
+        state = new StateString();
+        return state;
+    }
+
+    @Override
+    public State switchToCharState() {
+        flush();
+        state = new StateChar();
+        return state;
+    }
+
+    @Override
+    public State switchToStringArrayState() {
+        flush();
+        state = new StateStringArray();
+        return state;
+    }
+
+    @Override
+    public State switchToBooleanState() {
+        flush();
+        state = new StateBoolean();
+        return state;
+    }
+
+    @Override
+    public State switchToReferenceState() {
+        flush();
+        state = new StateReference();
+        return state;
+    }
+
+    private boolean checkOnOverFlowMaxValue(int  num) {
         boolean flag = false;
         if ((sumInt > 0) && (num > 0) && (sumInt > Integer.MAX_VALUE - num))
             flag = true;
         return flag;
     }
 
-    private static boolean checkOnOverFlowMinValue(int num) {
+    private boolean checkOnOverFlowMinValue(int num) {
         boolean flag = false;
         if ((num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE - num))
             flag = true;
         return flag;
     }
 
+    private void flush() {
+        logSumOfIntInBuf();
+    }
 }
