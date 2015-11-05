@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * Created by tan on 02.11.15.
  */
-public class StateStringArray extends State {
+public class StateStringArray implements State {
     private static final String SEP = System.lineSeparator();
     private Printer printer;
 
@@ -16,7 +16,7 @@ public class StateStringArray extends State {
     }
 
     @Override
-    public void log(String message) {
+    public void log(String message) throws PrinterException {
         String[] strings;
         strings = message.split(", ");
         String str = "";
@@ -29,25 +29,5 @@ public class StateStringArray extends State {
 
     @Override
     public void flush() {
-    }
-
-    @Override
-    public State switchToIntState() {
-        return new StateInt(printer);
-    }
-
-    @Override
-    public State switchToStringState() {
-        return new StateString(printer);
-    }
-
-    @Override
-    public State switchToStringArrayState() {
-        return this;
-    }
-
-    @Override
-    public State switchToDefaultState() {
-        return new StateDefault(printer);
     }
 }

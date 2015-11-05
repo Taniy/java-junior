@@ -4,7 +4,7 @@ package com.acme.edu;
  * logging for StateDefault type
  * (char, boolean, reference, object)
  */
-public class StateDefault extends State {
+public class StateDefault implements State {
     private Printer printer;
 
     /**
@@ -16,28 +16,8 @@ public class StateDefault extends State {
     }
 
     @Override
-    public void log(String message) {
+    public void log(String message) throws PrinterException {
         printer.print(message);
-    }
-
-    @Override
-    public State switchToIntState() {
-        return new StateInt(printer);
-    }
-
-    @Override
-    public State switchToStringState() {
-        return new StateString(printer);
-    }
-
-    @Override
-    public State switchToStringArrayState() {
-        return new StateStringArray(printer);
-    }
-
-    @Override
-    public State switchToDefaultState() {
-        return this;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * Created by tan on 02.11.15.
  */
-public class StateInt extends State {
+public class StateInt implements State {
     private static final String PRIMITIVE = "primitive: ";
     private static final int SUM_OF_END_MESSAGE = 0;
     private Integer sumInt = null;
@@ -23,7 +23,7 @@ public class StateInt extends State {
      * @param message string
      */
     @Override
-    public void log(String message) {
+    public void log(String message) throws PrinterException {
         int number = Integer.parseInt(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
             flush();
@@ -40,30 +40,7 @@ public class StateInt extends State {
     }
 
     @Override
-    public State switchToIntState() {
-        return this;
-    }
-
-    @Override
-    public State switchToStringState() {
-        flush();
-        return new StateString(printer);
-    }
-
-    @Override
-    public State switchToStringArrayState() {
-        flush();
-        return new StateStringArray(printer);
-    }
-
-    @Override
-    public State switchToDefaultState() {
-        flush();
-        return new StateDefault(printer);
-    }
-
-    @Override
-    public void flush() {
+    public void flush() throws PrinterException {
         if (sumInt == null)
             return;
         printer.print(PRIMITIVE + sumInt);

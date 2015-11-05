@@ -9,5 +9,6 @@ public interface Printer {
      * print messages
      * @param message string
      */
-    void print(String message);
+    void print(String message) throws PrinterException;
+
 }

@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * Created by tan on 02.11.15.
  */
-public class StateString extends State {
+public class StateString implements State {
     private static final int EMPTY_SUM_OF_STRINGS = 0;
     private int countString;
     private String lastString = "";
@@ -23,8 +23,8 @@ public class StateString extends State {
      * @param message string
      */
     @Override
-    public void log(String message) {
-        if (message == lastString)
+    public void log(String message) throws PrinterException {
+        if (message.equals(lastString))
             countString++;
         else {
             flush();
@@ -34,30 +34,7 @@ public class StateString extends State {
     }
 
     @Override
-    public State switchToIntState() {
-        flush();
-        return new StateInt(printer);
-    }
-
-    @Override
-    public State switchToStringState() {
-        return this;
-    }
-
-    @Override
-    public State switchToStringArrayState() {
-        flush();
-        return new StateStringArray(printer);
-    }
-
-    @Override
-    public State switchToDefaultState() {
-        flush();
-        return new StateDefault(printer);
-    }
-
-    @Override
-    public void flush() {
+    public void flush() throws PrinterException {
         if (countString == EMPTY_SUM_OF_STRINGS)
             return;
         String str = "string: " + lastString;

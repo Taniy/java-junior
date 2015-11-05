@@ -3,8 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.*;
 import org.junit.Assert;
 import org.junit.Test;
+
 import static org.mockito.Mockito.*;
-import com.acme.edu.SysoutCaptureAndAssertionAbility;
 
 /**
  * Created by tan on 03.11.15.
@@ -12,7 +12,7 @@ import com.acme.edu.SysoutCaptureAndAssertionAbility;
 public class StateTest implements SysoutCaptureAndAssertionAbility {
 
     @Test
-    public void shouldNotPrintSumWhenLogValuesAndZero() {
+    public void shouldNotPrintSumWhenLogValuesAndZero() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
@@ -24,7 +24,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintMaxAndMinWhenLogMaxMinValues() {
+    public void shouldPrintMaxAndMinWhenLogMaxMinValues() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
@@ -36,7 +36,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintSumWhenLogSeveralValues() {
+    public void shouldPrintSumWhenLogSeveralValues() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
@@ -49,7 +49,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintSeparateValuesWhenOverflowMaxInteger() {
+    public void shouldPrintSeparateValuesWhenOverflowMaxInteger() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
@@ -62,7 +62,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintSeparateValuesWhenOverflowMinInteger() {
+    public void shouldPrintSeparateValuesWhenOverflowMinInteger() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
@@ -75,39 +75,39 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldSwitchToIntState() {
+    public void shouldSwitchToIntState() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateInt(mok);
 
-        Assert.assertEquals(sut,sut.switchToIntState());
+        Assert.assertEquals(sut,sut.switchToState(sut));
     }
 
         @Test
-    public void shouldSwitchToDefaultState() {
+    public void shouldSwitchToDefaultState() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateDefault(mok);
 
-        Assert.assertEquals(sut,sut.switchToDefaultState());
+        Assert.assertEquals(sut,sut.switchToState(sut));
     }
 
     @Test
-    public void shouldSwitchToStringState() {
+    public void shouldSwitchToStringState() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateString(mok);
 
-        Assert.assertEquals(sut,sut.switchToStringState());
+        Assert.assertEquals(sut,sut.switchToState(sut));
     }
 
     @Test
-    public void shouldSwitchToStringArrayState() {
+    public void shouldSwitchToStringArrayState() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateStringArray(mok);
 
-        Assert.assertEquals(sut,sut.switchToStringArrayState());
+        Assert.assertEquals(sut,sut.switchToState(sut));
     }
 
     @Test
-    public void shouldPrintStringWhenLogString() {
+    public void shouldPrintStringWhenLogString() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateString(mok);
 
@@ -118,7 +118,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintSumStrinsWhenLogSeveralStrings() {
+    public void shouldPrintSumStrinsWhenLogSeveralStrings() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateString(mok);
 
@@ -130,7 +130,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintCharBooleanReferenceWhenLogCharBooleanReference() {
+    public void shouldPrintCharBooleanReferenceWhenLogCharBooleanReference() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateDefault(mok);
 
@@ -146,7 +146,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintStringArraywhenLogStringArray() {
+    public void shouldPrintStringArraywhenLogStringArray() throws PrinterException {
         Printer mok = mock(Printer.class);
         State sut = new StateStringArray(mok);
 
@@ -157,7 +157,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintWhenPrintInConsolePrinter() {
+    public void shouldPrintWhenPrintInConsolePrinter() throws PrinterException {
         captureSysout();
         ConsolePrinter sut= new ConsolePrinter();
         sut.print("TRA");

@@ -3,41 +3,29 @@ package com.acme.edu;
 /**
  * class for different types of State
  */
-public abstract class State {
+public interface State {
 
     /**
      * logging string messages
      * @param message string
      */
-    public abstract void log(String message);
+    void log(String message) throws PrinterException;
 
     /**
-     * change current state to int
-     * @return int state
+     * change to current state
+     * @return state
      */
-    public abstract State switchToIntState();
-
-    /**
-     * change current state to string
-     * @return string state
-     */
-    public abstract State switchToStringState();
-
-    /**
-     * change current state to stringArray
-     * @return StringArray state
-     */
-    public abstract State switchToStringArrayState();
-
-    /**
-     * change current state to char,reference, boolean
-     * @return default state
-     */
-    public abstract State switchToDefaultState();
+    default State switchToState(State state) throws PrinterException {
+        if (!(state.getClass() == this.getClass())){
+            this.flush();
+            return state;
+        }
+        return this;
+    }
 
     /**
      * clean all messages saved in buffer
      */
-    public abstract void flush();
+    void flush() throws PrinterException;
 
 }

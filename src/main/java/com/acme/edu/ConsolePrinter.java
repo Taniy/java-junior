@@ -5,7 +5,9 @@ package com.acme.edu;
  */
 public class ConsolePrinter implements Printer {
     @Override
-    public void print(String message) {
-            System.out.println(message);
+    public void print(String message) throws PrinterException {
+        if (message == null)
+            throw new PrinterException(message);
+        System.out.println(message);
     }
 }

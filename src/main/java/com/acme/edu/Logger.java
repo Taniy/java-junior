@@ -34,8 +34,8 @@ public class Logger {
      * example "primitive: 1"
      * where int message = 1.
      */
-    public void log(int message) {
-        state = state.switchToIntState();
+    public void log(int message) throws PrinterException {
+        state = state.switchToState(new StateInt(printer));
         state.log("" + message);
     }
 
@@ -45,8 +45,8 @@ public class Logger {
      * example "primitive: true"
      * where boolean message = true
      */
-    public void log(boolean message) {
-        state = state.switchToDefaultState();
+    public void log(boolean message) throws PrinterException {
+        state = state.switchToState(new StateDefault(printer));
         state.log(PRIMITIVE + message);
     }
 
@@ -56,8 +56,8 @@ public class Logger {
      * example "char: m"
      * where m - char message
      */
-    public void log(char message) {
-        state = state.switchToDefaultState();
+    public void log(char message) throws PrinterException {
+        state = state.switchToState(new StateDefault(printer));
         state.log(CHAR + message);
     }
 
@@ -70,9 +70,9 @@ public class Logger {
      * "str"- string message
      * if n = 1 containInBuf "string: str"
      */
-    public void log(String message) throws MessageNullException {
+    public void log(String message) throws MessageNullException, PrinterException {
             checkOnNull(message);
-            state = state.switchToStringState();
+            state = state.switchToState(new StateString(printer));
             state.log(message);
     }
 
@@ -82,9 +82,9 @@ public class Logger {
      * example "reference: @"
      * where message = @
      */
-    public void log(Object message) throws MessageNullException {
+    public void log(Object message) throws MessageNullException, PrinterException {
             checkOnNull(message);
-            state = state.switchToDefaultState();
+            state = state.switchToState(new StateDefault(printer));
             state.log(REFERENCE + message);
 
     }
@@ -143,9 +143,9 @@ public class Logger {
      * example "str strings str 2"
      * where message = {"str", "strings", "str 2"}
      */
-    public void log(String... message) throws MessageNullException {
+    public void log(String... message) throws MessageNullException, PrinterException {
             checkOnNull(message);
-            state = state.switchToStringArrayState();
+            state = state.switchToState(new StateStringArray(printer));
             state.log(Arrays.toString(message));
         }
     /**
@@ -153,7 +153,7 @@ public class Logger {
      * need to write finish() at the end of using class
      * containInBuf all saved messages, that haven't logged yet
      */
-    public void finish() {
+    public void finish() throws PrinterException {
         state.flush();
     }
 
