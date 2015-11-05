@@ -4,6 +4,10 @@ package com.acme.edu;
  * PrinterException class
  */
 public class PrinterException extends Exception {
+    /**
+     * constructor printerexception
+     * no param
+     */
     public PrinterException() {
         super();
     }
