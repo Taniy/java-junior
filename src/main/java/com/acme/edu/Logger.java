@@ -70,9 +70,10 @@ public class Logger {
      * "str"- string message
      * if n = 1 containInBuf "string: str"
      */
-    public void log(String message) {
-        state = state.switchToStringState();
-        state.log(message);
+    public void log(String message) throws MessageNullException {
+            checkOnNull(message);
+            state = state.switchToStringState();
+            state.log(message);
     }
 
     /**
@@ -81,9 +82,11 @@ public class Logger {
      * example "reference: @"
      * where message = @
      */
-    public void log(Object message) {
-        state = state.switchToDefaultState();
-        state.log(REFERENCE + message);
+    public void log(Object message) throws MessageNullException {
+            checkOnNull(message);
+            state = state.switchToDefaultState();
+            state.log(REFERENCE + message);
+
     }
 
     /**
@@ -140,11 +143,11 @@ public class Logger {
      * example "str strings str 2"
      * where message = {"str", "strings", "str 2"}
      */
-    public void log(String... message) {
-        state = state.switchToStringArrayState();
-        state.log(Arrays.toString(message));
-    }
-
+    public void log(String... message) throws MessageNullException {
+            checkOnNull(message);
+            state = state.switchToStringArrayState();
+            state.log(Arrays.toString(message));
+        }
     /**
      * finish actions of logger
      * need to write finish() at the end of using class
@@ -168,5 +171,10 @@ public class Logger {
             }
             str.append(BRACE_CLOSE);
         }
+    }
+
+    private void checkOnNull(Object message) throws MessageNullException {
+        if (message == null)
+            throw new MessageNullException("" + message);
     }
 }

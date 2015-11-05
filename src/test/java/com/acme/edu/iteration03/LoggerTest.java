@@ -1,6 +1,7 @@
 package com.acme.edu.iteration03;
 
 import com.acme.edu.Logger;
+import com.acme.edu.MessageNullException;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.After;
 import org.junit.Before;
@@ -80,7 +81,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shouldLogStringsWithOneMethodCall() throws IOException {
+    public void shouldLogStringsWithOneMethodCall() throws IOException, MessageNullException {
         //region when
         logger.log("str1", "string 2", "str 3");
         logger.finish();
@@ -104,7 +105,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {
+    public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException, MessageNullException {
         //region when
         logger.log(1);
         logger.log("str");

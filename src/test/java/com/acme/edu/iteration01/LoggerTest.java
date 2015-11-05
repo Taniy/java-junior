@@ -1,6 +1,7 @@
 package com.acme.edu.iteration01;
 
 import com.acme.edu.Logger;
+import com.acme.edu.MessageNullException;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.After;
 import org.junit.Before;
@@ -81,7 +82,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogString() throws IOException {
+    public void shouldLogString() throws IOException, MessageNullException {
         //region when
         logger.log("test string 1");
         logger.log("other str");
@@ -112,7 +113,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogReference() throws IOException {
+    public void shouldLogReference() throws IOException, MessageNullException {
         //region when
         logger.log(new Object());
         logger.finish();

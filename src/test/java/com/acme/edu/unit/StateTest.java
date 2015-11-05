@@ -153,7 +153,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
         sut.log("[str2, str3, str]");
         sut.flush();
 
-        verify(mok, times(1)).print("str2"+ Logger.SEP + "str3" + Logger.SEP + "str");
+        verify(mok, times(1)).print("str2"+ SEP + "str3" + SEP + "str");
     }
 
     @Test
