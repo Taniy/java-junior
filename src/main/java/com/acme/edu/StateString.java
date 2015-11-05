@@ -46,6 +46,7 @@ public class StateString extends State {
 
     @Override
     public State switchToStringArrayState() {
+        flush();
         return new StateStringArray(printer);
     }
 

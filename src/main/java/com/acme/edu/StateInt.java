@@ -58,6 +58,7 @@ public class StateInt extends State {
 
     @Override
     public State switchToDefaultState() {
+        flush();
         return new StateDefault(printer);
     }
 
