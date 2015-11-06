@@ -1,20 +1,25 @@
-package com.acme.edu;
+package com.acme.edu.state;
+
+import com.acme.edu.IllegalArgumentException;
+import com.acme.edu.printer.Printer;
+import com.acme.edu.PrinterException;
 
 /**
- * Created by tan on 02.11.15.
+ * Class StateInt implements State
+ * logging fo type int
  */
 public class StateInt implements State {
     private static final String PRIMITIVE = "primitive: ";
     private static final int SUM_OF_END_MESSAGE = 0;
     private Integer sumInt = null;
-    private Printer printer;
+    private Printer[] printers;
 
     /**
      * pass Printer to StateInt
-     * @param printer
+     * @param printers
      */
-    public StateInt(Printer printer) {
-        this.printer = printer;
+    public StateInt(Printer... printers) {
+        this.printers = printers;
     }
 
     /**
@@ -23,13 +28,13 @@ public class StateInt implements State {
      * @param message string
      */
     @Override
-    public void log(String message) throws PrinterException {
+    public void log(String message) throws IllegalArgumentException {
         int number = Integer.parseInt(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
             flush();
-            printer.print(PRIMITIVE + number);
+            printToPrinter(PRIMITIVE + number);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(number)||checkOnOverFlowMinValue(number))) {
-            printer.print(PRIMITIVE + sumInt);
+            printToPrinter(PRIMITIVE + sumInt);
             sumInt = number;
         } else  {
             if (sumInt == null) {
@@ -40,10 +45,10 @@ public class StateInt implements State {
     }
 
     @Override
-    public void flush() throws PrinterException {
+    public void flush() throws IllegalArgumentException {
         if (sumInt == null)
             return;
-        printer.print(PRIMITIVE + sumInt);
+        printToPrinter(PRIMITIVE + sumInt);
         sumInt = null;
     }
 
@@ -59,5 +64,14 @@ public class StateInt implements State {
         if ((num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE - num))
             flag = true;
         return flag;
+    }
+
+    private void printToPrinter(String message) throws IllegalArgumentException {
+        for(Printer printer: printers)
+            try {
+                printer.print(message);
+            } catch (PrinterException e) {
+                throw new IllegalArgumentException(e);
+            }
     }
 }

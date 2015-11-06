@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * PrinterException class
  */
-public class PrinterException extends Exception {
+public class PrinterException extends LogException {
     /**
      * constructor printerexception
      * no param

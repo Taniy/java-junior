@@ -1,9 +1,16 @@
-package com.acme.edu;
+package com.acme.edu.printer;
+
+import com.acme.edu.PrinterException;
 
 /**
- * Created by tan on 03.11.15.
+ * Class ConsolePrinter implements Printer
  */
 public class ConsolePrinter implements Printer {
+    /**
+     * print to console
+     * @param message string
+     * @throws PrinterException
+     */
     @Override
     public void print(String message) throws PrinterException {
         if (message == null)

@@ -1,5 +1,10 @@
 package com.acme.edu;
 
+import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.FilePrinter;
+import com.acme.edu.printer.Printer;
+import com.acme.edu.state.*;
+
 import java.util.Arrays;
 
 /**
@@ -17,15 +22,16 @@ public class Logger {
     public static final String PRIMITIVES_MULTIMATRIX = "primitives multimatrix: ";
     public static final String SEP = System.lineSeparator();
     public static final String BRACE_OPEN = "{" + SEP;
-    public static final String BRACE_CLOSE = "}"+ SEP;
-    private Printer printer = new ConsolePrinter();
-    private State state = new StateDefault(printer);
+    public static final String BRACE_CLOSE = "}" + SEP;
+    private Printer[] printers;
+    private State state = new StateDefault(printers);
     //endregion
 
     /**
      * constructor of Logger
      */
-    public Logger() {
+    public Logger(Printer... printers) {
+        this.printers = printers;
     }
 
     /**
@@ -34,8 +40,8 @@ public class Logger {
      * example "primitive: 1"
      * where int message = 1.
      */
-    public void log(int message) throws PrinterException {
-        state = state.switchToState(new StateInt(printer));
+    public void log(int message) throws LogException {
+        state = state.switchToState(new StateInt(printers));
         state.log("" + message);
     }
 
@@ -45,8 +51,8 @@ public class Logger {
      * example "primitive: true"
      * where boolean message = true
      */
-    public void log(boolean message) throws PrinterException {
-        state = state.switchToState(new StateDefault(printer));
+    public void log(boolean message) throws LogException {
+        state = state.switchToState(new StateDefault(printers));
         state.log(PRIMITIVE + message);
     }
 
@@ -56,8 +62,8 @@ public class Logger {
      * example "char: m"
      * where m - char message
      */
-    public void log(char message) throws PrinterException {
-        state = state.switchToState(new StateDefault(printer));
+    public void log(char message) throws LogException {
+        state = state.switchToState(new StateDefault(printers));
         state.log(CHAR + message);
     }
 
@@ -70,10 +76,10 @@ public class Logger {
      * "str"- string message
      * if n = 1 containInBuf "string: str"
      */
-    public void log(String message) throws MessageNullException, PrinterException {
-            checkOnNull(message);
-            state = state.switchToState(new StateString(printer));
-            state.log(message);
+    public void log(String message) throws LogException {
+        checkOnNull(message);
+        state = state.switchToState(new StateString(printers));
+        state.log(message);
     }
 
     /**
@@ -82,10 +88,10 @@ public class Logger {
      * example "reference: @"
      * where message = @
      */
-    public void log(Object message) throws MessageNullException, PrinterException {
-            checkOnNull(message);
-            state = state.switchToState(new StateDefault(printer));
-            state.log(REFERENCE + message);
+    public void log(Object message) throws LogException {
+        checkOnNull(message);
+        state = state.switchToState(new StateDefault(printers));
+        state.log(REFERENCE + message);
 
     }
 
@@ -97,7 +103,7 @@ public class Logger {
      */
     public static void log(int... message) {
         int sum = 0;
-        for (int i = 0; i < message.length;  i++) {
+        for (int i = 0; i < message.length; i++) {
             sum = sum + message[i];
         }
         print(PRIMITIVES_ARRAY + sum);
@@ -123,9 +129,9 @@ public class Logger {
      */
     public static void log(int[][][][] message) {
         StringBuilder str = new StringBuilder();
-        for (int[][][] matrixThree: message) {
+        for (int[][][] matrixThree : message) {
             str.append(BRACE_OPEN);
-            for (int [][] matrix: matrixThree) {
+            for (int[][] matrix : matrixThree) {
                 str.append(BRACE_OPEN);
                 putInString(matrix, str);
                 str.append(BRACE_CLOSE);
@@ -143,26 +149,27 @@ public class Logger {
      * example "str strings str 2"
      * where message = {"str", "strings", "str 2"}
      */
-    public void log(String... message) throws MessageNullException, PrinterException {
-            checkOnNull(message);
-            state = state.switchToState(new StateStringArray(printer));
-            state.log(Arrays.toString(message));
-        }
+    public void log(String... message) throws LogException {
+        checkOnNull(message);
+        state = state.switchToState(new StateStringArray(printers));
+        state.log(Arrays.toString(message));
+    }
+
     /**
      * finish actions of logger
      * need to write finish() at the end of using class
      * containInBuf all saved messages, that haven't logged yet
      */
-    public void finish() throws PrinterException {
+    public void finish() throws LogException {
         state.flush();
     }
 
-    private  static  void print(String message) {
+    private static void print(String message) {
         System.out.println(message);
     }
 
     private static void putInString(int[][] ints, StringBuilder str) {
-        for (int[] array: ints) {
+        for (int[] array : ints) {
             str.append("{");
             for (int j = 0; j < ints.length; j++) {
                 str.append(array[j]);
@@ -173,8 +180,8 @@ public class Logger {
         }
     }
 
-    private void checkOnNull(Object message) throws MessageNullException {
+    private void checkOnNull(Object message) throws IllegalArgumentException {
         if (message == null)
-            throw new MessageNullException("" + message);
+            throw new IllegalArgumentException("" + message);
     }
 }

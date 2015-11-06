@@ -1,7 +1,8 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.IllegalArgumentException;
+import com.acme.edu.LogException;
 import com.acme.edu.Logger;
-import com.acme.edu.MessageNullException;
 import com.acme.edu.PrinterException;
 import org.junit.Test;
 
@@ -10,15 +11,15 @@ import org.junit.Test;
  */
 public class LoggerTest {
 
-    @Test(expected = MessageNullException.class, timeout = 5000)
-    public void shouldWaitExceptionWhenStringNull() throws MessageNullException, PrinterException {
+    @Test(expected = LogException.class, timeout = 5000)
+    public void shouldWaitExceptionWhenStringNull() throws LogException {
         Logger logger = new Logger();
         String s = null;
         logger.log(s);
     }
 
-    @Test(expected = MessageNullException.class, timeout = 5000)
-    public void shouldWaitExceptionWhenStringArgNull() throws MessageNullException, PrinterException {
+    @Test(expected = LogException.class, timeout = 5000)
+    public void shouldWaitExceptionWhenStringArgNull() throws LogException {
         Logger logger = new Logger();
         String[] a = null;
         logger.log(a);

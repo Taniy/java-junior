@@ -1,4 +1,6 @@
-package com.acme.edu;
+package com.acme.edu.printer;
+
+import com.acme.edu.PrinterException;
 
 /**
  * Interface of Printer

@@ -3,7 +3,7 @@ package com.acme.edu;
 /**
  * IllegalArgumentException extends Exception
  */
-public class IllegalArgumentException extends Exception {
+public class IllegalArgumentException extends LogException {
 
     /**
      * constructor MessageNullException with empty param
