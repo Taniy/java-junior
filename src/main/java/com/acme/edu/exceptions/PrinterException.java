@@ -1,11 +1,9 @@
 package com.acme.edu.exceptions;
 
-import java.util.ArrayList;
-
 /**
  * PrinterException class
  */
-public class PrinterException extends LogException {
+public class PrinterException extends StateException{
 
     /**
      * constructor PrinterException

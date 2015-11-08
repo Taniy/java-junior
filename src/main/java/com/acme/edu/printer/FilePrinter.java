@@ -44,9 +44,9 @@ public class FilePrinter implements Printer {
                 printWriter.write(builder.toString());
                 printWriter.flush();
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
-                throw new PrinterException();
+                throw new PrinterException(e);
             } catch (IOException e) {
-                throw new PrinterException();
+                throw new PrinterException(e);
             }
             counterOfMessages = 0;
             builder.delete(0,builder.length());

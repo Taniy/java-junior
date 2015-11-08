@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exceptions.IllegalArgumentException;
+import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.exceptions.PrinterException;
 
@@ -23,7 +23,7 @@ public class StateStringArray implements State {
     }
 
     @Override
-    public void log(String message) throws IllegalArgumentException {
+    public void log(String message) throws StateException {
         String[] strings;
         strings = message.split(", ");
         String str = "";
@@ -34,7 +34,7 @@ public class StateStringArray implements State {
         printToPrinter(str);
     }
 
-    private void printToPrinter(String message) throws IllegalArgumentException {
+    private void printToPrinter(String message) throws StateException {
         ArrayList<Exception> list = new ArrayList<>();
         for(Printer printer: printers) {
             try {
@@ -44,7 +44,7 @@ public class StateStringArray implements State {
             }
         }
         if (!list.isEmpty())
-            throw new IllegalArgumentException(list.toString());
+            throw new StateException(list.toString());
     }
 
 

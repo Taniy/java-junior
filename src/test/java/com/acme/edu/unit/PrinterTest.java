@@ -39,7 +39,7 @@ public class PrinterTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldPrintWhenPrintInConsolePrinter() throws LogException {
+    public void shouldPrintWhenPrintInConsolePrinter() throws PrinterException {
         captureSysout();
         ConsolePrinter sut= new ConsolePrinter();
         sut.print("TRA");

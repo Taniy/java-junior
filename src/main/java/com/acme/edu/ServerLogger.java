@@ -38,7 +38,7 @@ public class ServerLogger {
                 client.close();
                 out.writeUTF(ОК);
                 System.out.println(readLine);
-            };
+            }
             in.close();
             out.close();
             sv.close();
@@ -85,7 +85,7 @@ public class ServerLogger {
      * @param args
      */
     public static void main(String[] args) throws ServerException {
-        new ServerLogger();
+        ServerLogger server = new ServerLogger();
     }
 
 }

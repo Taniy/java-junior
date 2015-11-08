@@ -1,6 +1,7 @@
 package com.acme.edu.state;
 
 import com.acme.edu.exceptions.IllegalArgumentException;
+import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.exceptions.PrinterException;
 
@@ -30,7 +31,7 @@ public class StateInt implements State {
      * @param message string
      */
     @Override
-    public void log(String message) throws IllegalArgumentException {
+    public void log(String message) throws StateException {
         int number = Integer.parseInt(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
             flush();
@@ -47,7 +48,7 @@ public class StateInt implements State {
     }
 
     @Override
-    public void flush() throws IllegalArgumentException {
+    public void flush() throws StateException {
         if (sumInt == null)
             return;
         printToPrinter(PRIMITIVE + sumInt);
@@ -68,7 +69,7 @@ public class StateInt implements State {
         return flag;
     }
 
-    private void printToPrinter(String message) throws IllegalArgumentException {
+    private void printToPrinter(String message) throws StateException {
         ArrayList <Exception> list = new ArrayList<>();
         for(Printer printer: printers) {
             try {
@@ -78,6 +79,6 @@ public class StateInt implements State {
             }
         }
         if (!list.isEmpty())
-            throw new IllegalArgumentException(list.toString());
+            throw new StateException(list.toString());
     }
 }
