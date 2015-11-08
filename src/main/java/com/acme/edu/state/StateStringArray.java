@@ -2,9 +2,6 @@ package com.acme.edu.state;
 
 import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
-import com.acme.edu.exceptions.PrinterException;
-
-import java.util.ArrayList;
 
 /**
  *Class StateString Array implements State
@@ -31,20 +28,7 @@ public class StateStringArray implements State {
             str = str + SEP + strings[i];
         }
         str = str.substring(2,str.length()-1);
-        printToPrinter(str);
-    }
-
-    private void printToPrinter(String message) throws StateException {
-        ArrayList<Exception> list = new ArrayList<>();
-        for(Printer printer: printers) {
-            try {
-                printer.print(message);
-            } catch (PrinterException e) {
-                list.add(e);
-            }
-        }
-        if (!list.isEmpty())
-            throw new StateException(list.toString());
+        print(str, printers);
     }
 
 

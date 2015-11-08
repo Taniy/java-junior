@@ -1,11 +1,8 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exceptions.IllegalArgumentException;
 import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
-import com.acme.edu.exceptions.PrinterException;
 
-import java.util.ArrayList;
 
 /**
  * Class StateInt implements State
@@ -35,9 +32,9 @@ public class StateInt implements State {
         int number = Integer.parseInt(message);
         if(number == SUM_OF_END_MESSAGE || number == Integer.MAX_VALUE || number == Integer.MIN_VALUE) {
             flush();
-            printToPrinter(PRIMITIVE + number);
+            print(PRIMITIVE + number,printers);
         } else if ((sumInt != null) && (checkOnOverFlowMaxValue(number)||checkOnOverFlowMinValue(number))) {
-            printToPrinter(PRIMITIVE + sumInt);
+            print(PRIMITIVE + sumInt, printers);
             sumInt = number;
         } else  {
             if (sumInt == null) {
@@ -51,7 +48,7 @@ public class StateInt implements State {
     public void flush() throws StateException {
         if (sumInt == null)
             return;
-        printToPrinter(PRIMITIVE + sumInt);
+        print(PRIMITIVE + sumInt, printers);
         sumInt = null;
     }
 
@@ -67,18 +64,5 @@ public class StateInt implements State {
         if ((num < 0) && (sumInt < 0) && (sumInt < Integer.MIN_VALUE - num))
             flag = true;
         return flag;
-    }
-
-    private void printToPrinter(String message) throws StateException {
-        ArrayList <Exception> list = new ArrayList<>();
-        for(Printer printer: printers) {
-            try {
-                printer.print(message);
-            } catch (PrinterException e) {
-                list.add(e);
-            }
-        }
-        if (!list.isEmpty())
-            throw new StateException(list.toString());
     }
 }

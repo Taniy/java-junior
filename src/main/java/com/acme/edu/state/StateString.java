@@ -1,11 +1,7 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exceptions.IllegalArgumentException;
 import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
-import com.acme.edu.exceptions.PrinterException;
-
-import java.util.ArrayList;
 
 /**
  * StateString implements State
@@ -47,23 +43,10 @@ public class StateString implements State {
             return;
         String str = "string: " + lastString;
         if (countString == 1) {
-            printToPrinter(str);
+            print(str, printers);
         } else {
-            printToPrinter(str + " (x" + countString + ")");
+            print(str + " (x" + countString + ")", printers);
         }
         countString = EMPTY_SUM_OF_STRINGS;
-    }
-
-    private void printToPrinter(String message) throws StateException {
-        ArrayList<Exception> list = new ArrayList<>();
-        for(Printer printer: printers) {
-            try {
-                printer.print(message);
-            } catch (PrinterException e) {
-                list.add(e);
-            }
-        }
-        if (!list.isEmpty())
-            throw new StateException(list.toString());
     }
 }
