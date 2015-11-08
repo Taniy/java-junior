@@ -1,8 +1,8 @@
 package com.acme.edu.state;
 
-import com.acme.edu.IllegalArgumentException;
+import com.acme.edu.exceptions.IllegalArgumentException;
 import com.acme.edu.printer.Printer;
-import com.acme.edu.PrinterException;
+import com.acme.edu.exceptions.PrinterException;
 
 /**
  * Class StateInt implements State

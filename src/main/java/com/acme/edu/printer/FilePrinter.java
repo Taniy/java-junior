@@ -1,6 +1,6 @@
 package com.acme.edu.printer;
 
-import com.acme.edu.PrinterException;
+import com.acme.edu.exceptions.PrinterException;
 
 import java.io.*;
 
@@ -9,7 +9,7 @@ import java.io.*;
  * print in File
  */
 public class FilePrinter implements Printer {
-    public static final int MaxOfMessages = 0;
+    public static final int MaxOfMessages = 50;
     private String path;
     private String charSet;
     private int counterOfMessages;
@@ -33,9 +33,9 @@ public class FilePrinter implements Printer {
     @Override
     public void print(String message) throws PrinterException {
         counterOfMessages++;
-        builder.append(message + "\n");
+        builder.append(message + File.separator);
         if (counterOfMessages > MaxOfMessages) {
-            FileOutputStream file = null;
+            FileOutputStream file;
             try {
                 file = new FileOutputStream(path, true);
                 PrintWriter printWriter = new PrintWriter(
@@ -44,9 +44,11 @@ public class FilePrinter implements Printer {
                 printWriter.write(builder.toString());
                 printWriter.flush();
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
-                throw new PrinterException();
+                printerException.setPrinterExceptionList(e.toString());
+                throw printerException;
             } catch (IOException e) {
-                throw new PrinterException();
+                printerException.setPrinterExceptionList(e.toString());
+                throw printerException;
             }
             counterOfMessages = 0;
             builder.delete(0,builder.length());

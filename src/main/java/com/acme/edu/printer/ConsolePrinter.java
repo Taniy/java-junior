@@ -1,6 +1,6 @@
 package com.acme.edu.printer;
 
-import com.acme.edu.PrinterException;
+import com.acme.edu.exceptions.PrinterException;
 
 /**
  * Class ConsolePrinter implements Printer
@@ -13,8 +13,6 @@ public class ConsolePrinter implements Printer {
      */
     @Override
     public void print(String message) throws PrinterException {
-        if (message == null)
-            throw new PrinterException(message);
         System.out.println(message);
     }
 }

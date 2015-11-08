@@ -1,7 +1,7 @@
 package com.acme.edu;
 
-import com.acme.edu.printer.ConsolePrinter;
-import com.acme.edu.printer.FilePrinter;
+import com.acme.edu.exceptions.IllegalArgumentException;
+import com.acme.edu.exceptions.LogException;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.state.*;
 
@@ -23,15 +23,23 @@ public class Logger {
     public static final String SEP = System.lineSeparator();
     public static final String BRACE_OPEN = "{" + SEP;
     public static final String BRACE_CLOSE = "}" + SEP;
-    private Printer[] printers;
-    private State state = new StateDefault(printers);
+    private State stateStringArray;
+    private State stateDefault;
+    private State stateString;
+    private State state;
+    private State stateInt;
     //endregion
 
     /**
      * constructor of Logger
      */
     public Logger(Printer... printers) {
-        this.printers = printers;
+        state = new StateDefault(printers);
+        stateInt = new StateInt(printers);
+        stateDefault = new StateDefault(printers);
+        stateString = new StateString(printers);
+        stateStringArray = new StateStringArray(printers);
+
     }
 
     /**
@@ -41,7 +49,7 @@ public class Logger {
      * where int message = 1.
      */
     public void log(int message) throws LogException {
-        state = state.switchToState(new StateInt(printers));
+        state = state.switchToState(stateInt);
         state.log("" + message);
     }
 
@@ -52,7 +60,7 @@ public class Logger {
      * where boolean message = true
      */
     public void log(boolean message) throws LogException {
-        state = state.switchToState(new StateDefault(printers));
+        state = state.switchToState(stateDefault);
         state.log(PRIMITIVE + message);
     }
 
@@ -63,7 +71,7 @@ public class Logger {
      * where m - char message
      */
     public void log(char message) throws LogException {
-        state = state.switchToState(new StateDefault(printers));
+        state = state.switchToState(stateDefault);
         state.log(CHAR + message);
     }
 
@@ -78,7 +86,7 @@ public class Logger {
      */
     public void log(String message) throws LogException {
         checkOnNull(message);
-        state = state.switchToState(new StateString(printers));
+        state = state.switchToState(stateString);
         state.log(message);
     }
 
@@ -90,7 +98,7 @@ public class Logger {
      */
     public void log(Object message) throws LogException {
         checkOnNull(message);
-        state = state.switchToState(new StateDefault(printers));
+        state = state.switchToState(stateDefault);
         state.log(REFERENCE + message);
 
     }
@@ -151,7 +159,7 @@ public class Logger {
      */
     public void log(String... message) throws LogException {
         checkOnNull(message);
-        state = state.switchToState(new StateStringArray(printers));
+        state = state.switchToState(stateStringArray);
         state.log(Arrays.toString(message));
     }
 

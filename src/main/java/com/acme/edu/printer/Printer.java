@@ -1,11 +1,12 @@
 package com.acme.edu.printer;
 
-import com.acme.edu.PrinterException;
+import com.acme.edu.exceptions.PrinterException;
 
 /**
  * Interface of Printer
  */
 public interface Printer {
+    PrinterException printerException = new PrinterException();
 
     /**
      * print messages

@@ -1,11 +1,15 @@
-package com.acme.edu;
+package com.acme.edu.exceptions;
+
+import java.util.ArrayList;
 
 /**
  * PrinterException class
  */
 public class PrinterException extends LogException {
+    private ArrayList <String> listOfExceptions = new ArrayList<>();
+
     /**
-     * constructor printerexception
+     * constructor PrinterException
      * no param
      */
     public PrinterException() {
@@ -21,7 +25,7 @@ public class PrinterException extends LogException {
     }
 
     /**
-     * constructor printerexception fot message and cause
+     * constructor PrinterException for message and cause
      * @param message string
      * @param cause Throwable
      */
@@ -30,10 +34,14 @@ public class PrinterException extends LogException {
     }
 
     /**
-     * constructor printerexception fot cause
+     * constructor PrinterException for cause
      * @param cause Throwable
      */
     public PrinterException(Throwable cause) {
         super(cause);
+    }
+
+    public void setPrinterExceptionList(String exception) {
+        listOfExceptions.add(exception);
     }
 }

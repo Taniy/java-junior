@@ -1,9 +1,8 @@
 package com.acme.edu.iteration02;
 
 
-import com.acme.edu.LogException;
+import com.acme.edu.exceptions.LogException;
 import com.acme.edu.Logger;
-import com.acme.edu.PrinterException;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.After;
 import org.junit.Before;

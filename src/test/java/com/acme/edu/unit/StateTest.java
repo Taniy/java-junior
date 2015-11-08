@@ -1,7 +1,7 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.*;
-import com.acme.edu.IllegalArgumentException;
+import com.acme.edu.exceptions.LogException;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.state.*;

@@ -1,19 +1,20 @@
-package com.acme.edu;
+package com.acme.edu.exceptions;
 
 /**
  * IllegalArgumentException extends Exception
+ * for wrong parameters
  */
 public class IllegalArgumentException extends LogException {
 
     /**
-     * constructor MessageNullException with empty param
+     * constructor IllegalArgumentException with empty param
      */
     public IllegalArgumentException() {
         super();
     }
 
     /**
-     * constructor printerexception fot message
+     * constructor IllegalArgumentException fot message
      * @param message
      */
     public IllegalArgumentException(String message) {
@@ -21,7 +22,7 @@ public class IllegalArgumentException extends LogException {
     }
 
     /**
-     * constructor printerexception fot message and cause
+     * constructor IllegalArgumentException fot message and cause
      * @param message
      * @param cause
      */
@@ -30,7 +31,7 @@ public class IllegalArgumentException extends LogException {
     }
 
     /**
-     * constructor printerexception fot cause
+     * constructor IllegalArgumentException fot cause
      * @param cause
      */
     public IllegalArgumentException(Throwable cause) {

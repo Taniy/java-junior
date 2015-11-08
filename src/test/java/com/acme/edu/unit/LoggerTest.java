@@ -1,9 +1,7 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.IllegalArgumentException;
-import com.acme.edu.LogException;
+import com.acme.edu.exceptions.LogException;
 import com.acme.edu.Logger;
-import com.acme.edu.PrinterException;
 import org.junit.Test;
 
 /**
