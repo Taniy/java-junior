@@ -5,6 +5,7 @@ import com.acme.edu.printer.FilePrinter;
 import com.acme.edu.printer.RemotePrinter;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.exceptions.PrinterException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,6 +30,7 @@ public class PrinterTest {
             sut.print(s);
     }
 
+    @Ignore
     @Test
     public void shouldPrintInServer() throws PrinterException {
         Printer sut = new RemotePrinter();
