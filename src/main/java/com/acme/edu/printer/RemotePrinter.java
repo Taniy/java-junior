@@ -11,6 +11,8 @@ import java.net.Socket;
  */
 public class RemotePrinter implements Printer {
     public static final String OK = "OK";
+    public static final int PORT = 9000;
+    public static final String HOST = "127.0.0.1";
     private Socket socket;
 
     /**
@@ -20,7 +22,7 @@ public class RemotePrinter implements Printer {
      */
     public RemotePrinter() throws PrinterException {
         try {
-            socket = new Socket("127.0.0.1", 9000);
+            socket = new Socket(HOST,  PORT);
         } catch (IOException e) {
             throw new PrinterException(e);
         }
@@ -47,6 +49,7 @@ public class RemotePrinter implements Printer {
                         printerException.setPrinterExceptionList(readLine);
                 }
         } catch (IOException e) {
+            printerException.setPrinterExceptionList(e.toString());
             throw printerException;
         }
     }

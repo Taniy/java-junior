@@ -41,6 +41,10 @@ public class PrinterException extends LogException {
         super(cause);
     }
 
+    /**
+     * save all PrinterExceptions in list
+     * @param exception
+     */
     public void setPrinterExceptionList(String exception) {
         listOfExceptions.add(exception);
     }

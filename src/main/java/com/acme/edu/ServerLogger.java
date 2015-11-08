@@ -1,6 +1,5 @@
 package com.acme.edu;
 
-import com.acme.edu.exceptions.PrinterException;
 import com.acme.edu.exceptions.ServerException;
 
 import java.io.*;
@@ -14,10 +13,8 @@ import java.net.Socket;
 public class ServerLogger {
 
     public static final int MaxOfMessages = 50;
-    public static final String LINE_SEPARATOR = System.lineSeparator();
-    public static final String SEPARATOR = File.separator;
     public static final String ОК = "OK";
-    public static final String EXCEPTION = "exception: ";
+    public static final int PORT = 9000;
     private String path = "server.txt";
     private String charSet = "UTF-8";
     private int counterOfMessages;
@@ -27,11 +24,11 @@ public class ServerLogger {
      * connecting ServerSocket
      * listened and writing messages
      */
-    public ServerLogger(){
+    public ServerLogger() throws ServerException {
         ServerSocket sv;
         Socket client = null;
         try {
-            sv = new ServerSocket(9000);
+            sv = new ServerSocket(PORT);
             client = sv.accept();
             DataInputStream in = new DataInputStream(client.getInputStream());
             DataOutputStream out = new DataOutputStream(client.getOutputStream());
@@ -53,7 +50,7 @@ public class ServerLogger {
                     client.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ServerException(e);
             }
         }
     }
@@ -87,7 +84,7 @@ public class ServerLogger {
      * launch server
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ServerException {
         ServerLogger serverLogger = new ServerLogger();
     }
 
