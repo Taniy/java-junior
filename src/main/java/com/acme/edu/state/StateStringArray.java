@@ -4,6 +4,8 @@ import com.acme.edu.exceptions.IllegalArgumentException;
 import com.acme.edu.printer.Printer;
 import com.acme.edu.exceptions.PrinterException;
 
+import java.util.ArrayList;
+
 /**
  *Class StateString Array implements State
  * logging for type StringArray
@@ -33,12 +35,16 @@ public class StateStringArray implements State {
     }
 
     private void printToPrinter(String message) throws IllegalArgumentException {
-        for(Printer printer: printers)
+        ArrayList<Exception> list = new ArrayList<>();
+        for(Printer printer: printers) {
             try {
                 printer.print(message);
             } catch (PrinterException e) {
-                throw  new IllegalArgumentException(e);
+                list.add(e);
             }
+        }
+        if (!list.isEmpty())
+            throw new IllegalArgumentException(list.toString());
     }
 
 

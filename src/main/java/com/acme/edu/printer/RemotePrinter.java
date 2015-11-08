@@ -46,11 +46,10 @@ public class RemotePrinter implements Printer {
                     case OK:
                         break;
                     default:
-                        printerException.setPrinterExceptionList(readLine);
+                        throw new PrinterException(readLine);
                 }
         } catch (IOException e) {
-            printerException.setPrinterExceptionList(e.toString());
-            throw printerException;
+            throw new PrinterException(e);
         }
     }
 }

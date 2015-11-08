@@ -33,7 +33,7 @@ public class FilePrinter implements Printer {
     @Override
     public void print(String message) throws PrinterException {
         counterOfMessages++;
-        builder.append(message + File.separator);
+        builder.append(message).append("\n");
         if (counterOfMessages > MaxOfMessages) {
             FileOutputStream file;
             try {
@@ -44,11 +44,9 @@ public class FilePrinter implements Printer {
                 printWriter.write(builder.toString());
                 printWriter.flush();
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
-                printerException.setPrinterExceptionList(e.toString());
-                throw printerException;
+                throw new PrinterException();
             } catch (IOException e) {
-                printerException.setPrinterExceptionList(e.toString());
-                throw printerException;
+                throw new PrinterException();
             }
             counterOfMessages = 0;
             builder.delete(0,builder.length());

@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * PrinterException class
  */
 public class PrinterException extends LogException {
-    private ArrayList <String> listOfExceptions = new ArrayList<>();
 
     /**
      * constructor PrinterException
@@ -39,13 +38,5 @@ public class PrinterException extends LogException {
      */
     public PrinterException(Throwable cause) {
         super(cause);
-    }
-
-    /**
-     * save all PrinterExceptions in list
-     * @param exception
-     */
-    public void setPrinterExceptionList(String exception) {
-        listOfExceptions.add(exception);
     }
 }

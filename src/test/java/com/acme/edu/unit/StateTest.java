@@ -1,9 +1,11 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.*;
+import com.acme.edu.exceptions.IllegalArgumentException;
 import com.acme.edu.exceptions.LogException;
 import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.FilePrinter;
 import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.RemotePrinter;
 import com.acme.edu.state.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +15,9 @@ import static org.mockito.Mockito.*;
 /**
  * Created by tan on 03.11.15.
  */
-public class StateTest implements SysoutCaptureAndAssertionAbility {
+public class StateTest {
+
+    public static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Test
     public void shouldNotPrintSumWhenLogValuesAndZero() throws LogException {
@@ -157,14 +161,6 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
         sut.log("[str2, str3, str]");
         sut.flush();
 
-        verify(mok, times(1)).print("str2"+ SEP + "str3" + SEP + "str");
+        verify(mok, times(1)).print("str2"+ LINE_SEPARATOR + "str3" +  LINE_SEPARATOR + "str");
     }
-
-    @Test
-    public void shouldPrintWhenPrintInConsolePrinter() throws LogException {
-        captureSysout();
-        ConsolePrinter sut= new ConsolePrinter();
-        sut.print("TRA");
-        assertSysoutContains("TRA");
-        }
 }

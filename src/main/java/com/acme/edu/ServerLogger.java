@@ -33,9 +33,9 @@ public class ServerLogger {
             DataInputStream in = new DataInputStream(client.getInputStream());
             DataOutputStream out = new DataOutputStream(client.getOutputStream());
             String readLine;
-            int i = 0;
             while ((readLine = in.readUTF()) != null) {
                 printToFile(readLine);
+                client.close();
                 out.writeUTF(ОК);
                 System.out.println(readLine);
             };
@@ -85,7 +85,7 @@ public class ServerLogger {
      * @param args
      */
     public static void main(String[] args) throws ServerException {
-        ServerLogger serverLogger = new ServerLogger();
+        new ServerLogger();
     }
 
 }
