@@ -45,4 +45,15 @@ public class PrinterTest implements SysoutCaptureAndAssertionAbility {
         sut.print("TRA");
         assertSysoutContains("TRA");
     }
+
+    @Test
+    public void shouldChangeCollectionInFilePrinterWhenItHavePriority() throws PrinterException {
+        Printer sut = new FilePrinter("test.txt", "UTF-8");
+        String s ="2";
+        String s1 = "Error 2";
+        for( int i = 0; i < 51; i++) {
+            sut.print(s);
+            sut.print(s1);
+        }
+    }
 }

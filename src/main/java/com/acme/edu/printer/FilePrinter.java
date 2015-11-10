@@ -3,6 +3,7 @@ package com.acme.edu.printer;
 import com.acme.edu.exceptions.PrinterException;
 
 import java.io.*;
+import java.util.*;
 
 /**
  *Class FilePrinter implements Printer
@@ -13,7 +14,9 @@ public class FilePrinter implements Printer {
     private String path;
     private String charSet;
     private int counterOfMessages;
-    private StringBuilder builder = new StringBuilder();
+    private List <String> buffer  = new ArrayList<String>(50);
+    public static final String ERROR = "Error";
+   // private StringBuilder builder = new StringBuilder();
 
     /**
      * constructor of Printer
@@ -33,15 +36,28 @@ public class FilePrinter implements Printer {
     @Override
     public void print(String message) throws PrinterException {
         counterOfMessages++;
-        builder.append(message).append("\n");
+        buffer.add(message+"\n");
         if (counterOfMessages > MaxOfMessages) {
+            Collections.sort(buffer, new Comparator <String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    if (checkOnPriorityOfCollection(o1) < checkOnPriorityOfCollection(o2))
+                        return 1;
+                    else if (checkOnPriorityOfCollection(o1) > checkOnPriorityOfCollection(o2))
+                            return -1;
+                    return 0;
+
+
+
+                }
+            });
             FileOutputStream file;
             try {
                 file = new FileOutputStream(path, true);
                 PrintWriter printWriter = new PrintWriter(
                         new OutputStreamWriter(
                                 new BufferedOutputStream(file), charSet));
-                printWriter.write(builder.toString());
+                printWriter.write(buffer.toString());
                 printWriter.flush();
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
                 throw new PrinterException(e);
@@ -49,7 +65,13 @@ public class FilePrinter implements Printer {
                 throw new PrinterException(e);
             }
             counterOfMessages = 0;
-            builder.delete(0,builder.length());
+            buffer.clear();
         }
+    }
+
+    private int checkOnPriorityOfCollection(String string) {
+        if(string.contains(ERROR))
+            return 1;
+        return 0;
     }
 }

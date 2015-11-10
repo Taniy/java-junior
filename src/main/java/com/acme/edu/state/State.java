@@ -5,6 +5,7 @@ import com.acme.edu.exceptions.StateException;
 import com.acme.edu.printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * class for different types of State
@@ -35,7 +36,7 @@ public interface State {
      * @throws StateException (list of all print exceptions)
      */
     default void print(String message, Printer... printers) throws StateException {
-        ArrayList<Exception> list = new ArrayList<>();
+        Collection<Exception> list = new ArrayList<>();
         for(Printer printer: printers) {
             try {
                 printer.print(message);
