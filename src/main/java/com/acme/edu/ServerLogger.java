@@ -5,78 +5,46 @@ import com.acme.edu.exceptions.ServerException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * ServerLogger
  * Log received messages to file
  */
 public class ServerLogger {
-
-    public static final int MaxOfMessages = 50;
-    public static final String ОК = "OK";
+    private ServerSocket sv;
+    private ExecutorService pool = Executors.newFixedThreadPool(5);
     public static final int PORT = 9000;
-    private String path = "server.txt";
-    private String charSet = "UTF-8";
-    private int counterOfMessages;
-    private StringBuilder builder = new StringBuilder();
+
 
     /**
      * connecting ServerSocket
      * listened and writing messages
      */
     public ServerLogger() throws ServerException {
-        ServerSocket sv;
-        Socket client = null;
         try {
+            System.out.println("begin");
             sv = new ServerSocket(PORT);
-            client = sv.accept();
-            DataInputStream in = new DataInputStream(client.getInputStream());
-            DataOutputStream out = new DataOutputStream(client.getOutputStream());
-            String readLine;
-            while ((readLine = in.readUTF()) != null) {
-                printToFile(readLine);
-                client.close();
-                out.writeUTF(ОК);
-                System.out.println(readLine);
-            }
-            in.close();
-            out.close();
-            sv.close();
-        } catch (IOException|ServerException e1) {
-            try {
-                if (client != null) {
-                    DataOutputStream out = new DataOutputStream(client.getOutputStream());
-                    out.writeUTF(e1+"");
-                    client.close();
-                }
-            } catch (IOException e) {
-                throw new ServerException(e);
-            }
+        } catch (IOException e1) {
+            throw new ServerException(e1);
         }
     }
 
     /**
-     * print received messages to file
-     * @param message
+     * Start accept clients
      * @throws ServerException
      */
-    public void printToFile(String message) throws ServerException {
-        counterOfMessages++;
-        builder.append(message);
-        if (counterOfMessages > MaxOfMessages) {
-            FileOutputStream file;
+    public void start() throws ServerException {
+        while (true) {
+            Socket client;
             try {
-                file = new FileOutputStream(path, true);
-                PrintWriter printWriter = new PrintWriter(
-                        new OutputStreamWriter(
-                                new BufferedOutputStream(file), charSet));
-                printWriter.write(builder.toString());
-                printWriter.flush();
+                client = sv.accept();
             } catch (IOException e) {
                 throw new ServerException(e);
             }
-            counterOfMessages = 0;
-            builder.delete(0,builder.length());
+            pool.execute(new MyExecutor(client));
+            System.out.println("end");
         }
     }
 
@@ -86,6 +54,7 @@ public class ServerLogger {
      */
     public static void main(String[] args) throws ServerException {
         ServerLogger server = new ServerLogger();
+        server.start();
     }
 
 }

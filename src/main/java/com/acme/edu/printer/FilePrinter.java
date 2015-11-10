@@ -15,8 +15,7 @@ public class FilePrinter implements Printer {
     private String charSet;
     private int counterOfMessages;
     private List <String> buffer  = new ArrayList<String>(50);
-    public static final String ERROR = "Error";
-   // private StringBuilder builder = new StringBuilder();
+    public static final String ERROR = "ERROR";
 
     /**
      * constructor of Printer
@@ -46,9 +45,6 @@ public class FilePrinter implements Printer {
                     else if (checkOnPriorityOfCollection(o1) > checkOnPriorityOfCollection(o2))
                             return -1;
                     return 0;
-
-
-
                 }
             });
             FileOutputStream file;
@@ -57,7 +53,10 @@ public class FilePrinter implements Printer {
                 PrintWriter printWriter = new PrintWriter(
                         new OutputStreamWriter(
                                 new BufferedOutputStream(file), charSet));
-                printWriter.write(buffer.toString());
+                String str = new String();
+                for (String elem: buffer)
+                    str +=elem;
+                printWriter.write(str);
                 printWriter.flush();
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
                 throw new PrinterException(e);
