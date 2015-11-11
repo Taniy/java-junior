@@ -24,7 +24,6 @@ public class ServerLogger {
      */
     public ServerLogger() throws ServerException {
         try {
-            System.out.println("begin");
             sv = new ServerSocket(PORT);
         } catch (IOException e1) {
             throw new ServerException(e1);
@@ -44,7 +43,6 @@ public class ServerLogger {
                 throw new ServerException(e);
             }
             pool.execute(new MyExecutor(client));
-            System.out.println("end");
         }
     }
 

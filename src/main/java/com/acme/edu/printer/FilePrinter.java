@@ -37,15 +37,12 @@ public class FilePrinter implements Printer {
         counterOfMessages++;
         buffer.add(message+"\n");
         if (counterOfMessages > MaxOfMessages) {
-            Collections.sort(buffer, new Comparator <String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    if (checkOnPriorityOfCollection(o1) < checkOnPriorityOfCollection(o2))
-                        return 1;
-                    else if (checkOnPriorityOfCollection(o1) > checkOnPriorityOfCollection(o2))
-                            return -1;
-                    return 0;
-                }
+            Collections.sort(buffer, (o1, o2) -> {
+                if (checkOnPriorityOfCollection(o1) < checkOnPriorityOfCollection(o2))
+                    return 1;
+                else if (checkOnPriorityOfCollection(o1) > checkOnPriorityOfCollection(o2))
+                        return -1;
+                return 0;
             });
             FileOutputStream file;
             try {
